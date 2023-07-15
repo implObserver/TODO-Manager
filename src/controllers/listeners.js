@@ -1,13 +1,25 @@
-import { viewFolder } from "../views/nodes/content";
+import { OpenedFolder } from "../models/folderModels";
+import { createFolder, openFolder } from "./foldersControllers";
 
-export const addFolderListeners = (currentFolder) => {
+export const setFolderListeners = (currentFolder) => {
     let node = currentFolder.getNode();
-    const clickFolder = node.addEventListener('click', e => {
-        let folders = currentFolder.getInnerFolders();
-        console.log(1);
-        for (let folder of folders) {
-            const node = folder.getNode();
-            viewFolder(node);
-        }
+    const clickFolder = node.addEventListener('dblclick', e => {
+        openFolder(currentFolder);
+    });
+}
+
+export const setButtonForAddFolderListeners = (button) => {
+    let node = button.getNode();
+    const clickButton = node.addEventListener('dblclick', e => {
+        createFolder();
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+}
+
+export const setButtonForCloseFolderListeners = (button) => {
+    let node = button.getNode();
+    const clickButton = node.addEventListener('dblclick', e => {
+        let openedFolder = OpenedFolder.getOpenedFolder();
+        openFolder(openedFolder.getParent());
     });
 }
