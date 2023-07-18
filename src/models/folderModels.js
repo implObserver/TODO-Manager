@@ -5,7 +5,8 @@ import { getButtonForCloseFolder } from "../views/nodes/ButtonForCloseFolder";
 export const Folder = (ids, folder = 0) => {
     let id = ids;
     let count = 0;
-    const parent = folder;
+    let name;
+    let parent = folder;
     const innerFolders = []
     const node = getFolderNode(id);
 
@@ -33,11 +34,23 @@ export const Folder = (ids, folder = 0) => {
         return innerFolders;
     }
 
+    const setParent = (newParent) => {
+        parent = newParent;
+    }
+
     const getParent = () => {
         return parent;
     }
 
-    return { getParent, addFolder, del, getNode, getInnerFolders, getId };
+    const setName = (val) => {
+        name = val;
+    }
+
+    const getName = () => {
+        return name;
+    }
+
+    return { setParent, getParent, addFolder, del, getNode, getInnerFolders, getId, setName, getName };
 }
 
 export const ButtonForAddFolder = (() => {

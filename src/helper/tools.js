@@ -45,6 +45,12 @@ const Tools = (() => {
         }
     }
 
+    const removeChildsAfter = (node, child) => {
+        while (node.lastChild != child) {
+            node.removeChild(node.lastChild);
+        }
+    }
+
     const displayMode = (mode, ...nodes) => {
         for (let node of nodes) {
             node.style.display = mode;
@@ -52,7 +58,6 @@ const Tools = (() => {
     }
 
     const smoothVisibility = () => {
-
         const close = (e, op1, op2, dur, fill) => {
             return Animations.opacity(e, op1, op2, dur, fill).finished.then(() => {
                 e.style.visibility = 'hidden';
@@ -81,7 +86,14 @@ const Tools = (() => {
 
     const rgba2hex = (rgba) => `#${rgba.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+\.{0,1}\d*))?\)$/).slice(1).map((n, i) => (i === 3 ? Math.round(parseFloat(n) * 255) : parseFloat(n)).toString(16).padStart(2, '0').replace('NaN', '')).join('')}`
 
-    return { displayMode, smoothVisibilityGroup, smoothVisibility, rgba2hex, getNodeWithSpan, setAttributes, createNode, appendChilds, setUpSpan, removeChilds, addClasses };
+    const relativeFont = (nodeOfRelativity, cssVar) => {
+        var r = document.querySelector(':root');
+        let folderHeight = document.defaultView.getComputedStyle(nodeOfRelativity).width;
+        let size = parseFloat(folderHeight.replace('px', '')) / 6;
+        r.style.setProperty(cssVar, `${size}px`);
+    }
+
+    return { relativeFont, removeChildsAfter, displayMode, smoothVisibilityGroup, smoothVisibility, rgba2hex, getNodeWithSpan, setAttributes, createNode, appendChilds, setUpSpan, removeChilds, addClasses };
 })();
 
 export { Tools }

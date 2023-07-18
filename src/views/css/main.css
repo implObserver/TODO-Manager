@@ -8,12 +8,13 @@
     box-sizing: border-box;
 }
 
-html {
-    font-size: 8vh;
-    font-family: Roboto;
+:root {
+    --font-size-to-folder: 2vh;
 }
 
-body {}
+html {
+    font-family: Roboto;
+}
 
 .wrapper {
     display: grid;
@@ -30,12 +31,84 @@ span {
 }
 
 .header {
+    display: grid;
+    grid-template-columns: min-content min-content;
+    gap: 1vh;
     height: 7vh;
-    background-color: black;
+    justify-content: center;
+    align-items: center;
+    background-color: #b2d4b2;
     max-width: inherit;
 }
 
+.paths {
+    display: flex;
+    width: 2vh;
+    height: 4vh;
+    border: 0.2vh #36bb36 solid;
+    background-color: #d83d71;
+    opacity: 0.5;
+    font-size: 2vh;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.4vh;
+    cursor: pointer;
+}
+
+.paths:hover {
+    opacity: 1;
+}
+
+.chain-folders {
+    display: flex;
+    flex-direction: row;
+    max-width: 70vw;
+    font-size: 3vh;
+    height: min-content;
+    overflow-x: scroll;
+
+}
+
+::-webkit-scrollbar {
+    height: 1vh;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #37f037;
+
+}
+
+::-webkit-scrollbar-track {
+    background-color: #b2bad4;
+}
+
+.link-wrapper {
+    display: flex;
+    width: min-content;
+    background-color: #9cfd9c;
+    border: 0.2vh #36bb36 solid;
+    border-radius: 0.4vh;
+}
+
+.link-wrapper:last-child {
+    background-color: #b2bad4;
+}
+
+.link-wrapper :hover {
+    background-color: #37f037;
+}
+
+.link-wrapper:last-child :hover {
+    background-color: #96a1c2;
+}
+
 .content {
+    display: grid;
+    max-width: inherit;
+    max-height: inherit;
+}
+
+.folders {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(20vh, 1fr));
     grid-template-rows: min-content;
@@ -46,6 +119,7 @@ span {
     max-width: inherit;
     max-height: inherit;
     background-color: #e9f5e9;
+    font-size: var(--font-size-to-folder);
 }
 
 .folder,
@@ -60,6 +134,11 @@ span {
     align-items: center;
     max-width: inherit;
     max-height: inherit;
+    cursor: pointer;
+}
+
+.folder:hover {
+    z-index: 100;
 }
 
 .icon-wrapper {
@@ -84,17 +163,14 @@ span {
     align-items: center;
     align-content: center;
     text-align: center;
-    font-size: min(4vw, 4vh);
     height: min-content;
-    max-width: 50%;
+    max-width: 60%;
     max-height: inherit;
+    pointer-events: none;
 }
 
-.templateFolder {
-    cursor: pointer;
-}
-
-.templateFolder>.name {
+.templateFolder>.name,
+.chain-folders {
     user-select: none;
     /* standard syntax */
     -webkit-user-select: none;
@@ -131,12 +207,8 @@ span {
 @media screen and (min-aspect-ratio: 1/1) {}
 
 @media screen and (max-height: 450px) {
-    .content {
+    .folders {
         grid-template-columns: repeat(auto-fit, minmax(min(80vh, 100vw), 1fr));
-    }
-
-    .name {
-        font-size: min(12vh, 12vw);
     }
 }
 
@@ -145,11 +217,7 @@ span {
         max-width: 100vw;
     }
 
-    .content {
+    .folders {
         grid-template-columns: repeat(auto-fit, minmax(min(80vh, 100vw), 1fr));
-    }
-
-    .name {
-        font-size: min(12vh, 12vw);
     }
 }

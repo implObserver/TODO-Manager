@@ -1,34 +1,45 @@
 import { Tools } from "../helper/tools";
 import { ButtonForAddFolder, ButtonForCloseFolder, OpenedFolder } from "../models/folderModels";
-import { viewFolder } from "../views/nodes/content";
-import { setFolderListeners, setButtonForAddFolderListeners, setButtonForCloseFolderListeners } from "./listeners";
+import { addLinkToPath, viewFolder } from "../views/nodes/content";
+import { setListeners } from "./listeners";
 
 export const openFolder = (folder) => {
-    let content = document.querySelector('.content');
+    let content = document.querySelector('.folders');
     Tools.removeChilds(content);
-    createButtonForAddFolder();
-    createButtonForCloseFolder();
-    viewFolders(folder.getInnerFolders());
+    createButtons();
+    viewsCfg(folder);
     OpenedFolder.setOpenedFolder(folder);
 }
 
 export const createFolder = (folder = OpenedFolder.getOpenedFolder()) => {
     let newFolder = folder.addFolder(folder);
     viewFolder(newFolder.getNode());
-    setFolderListeners(newFolder);
+    setFontSizeToFolders();
+    setListeners().forFolder(newFolder);
+
 }
 
-const createButtonForAddFolder = () => {
+const createButtons = () => {
+    createButtonToAddFolder();
+    createButtonToCloseFolder();
+}
+
+const createButtonToAddFolder = () => {
     viewFolder(ButtonForAddFolder.getNode(), 'add');
 }
 
-const setButtonForAddFolderListenersListeners = (() => {
-    setButtonForAddFolderListeners(ButtonForAddFolder);
-    setButtonForCloseFolderListeners(ButtonForCloseFolder);
+const setButtonsListeners = (() => {
+    setListeners().forButtonToAddFolder(ButtonForAddFolder);
+    setListeners().forButtonToCloseFolder(ButtonForCloseFolder);
 })();
 
-const createButtonForCloseFolder = () => {
+const createButtonToCloseFolder = () => {
     viewFolder(ButtonForCloseFolder.getNode(), 'close');
+}
+
+const viewsCfg = (folder) => {
+    viewFolders(folder.getInnerFolders());
+    setFontSizeToFolders();
 }
 
 const viewFolders = (folders) => {
@@ -37,3 +48,9 @@ const viewFolders = (folders) => {
         viewFolder(node);
     }
 }
+
+export const setFontSizeToFolders = () => {
+    let template = document.querySelector('.templateFolder');
+    Tools.relativeFont(template, '--font-size-to-folder');
+}
+
