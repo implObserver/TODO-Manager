@@ -3,7 +3,7 @@ import { ButtonForAddFolder, ButtonForCloseFolder, Folder, OpenedFolder } from "
 import { ClusterLink } from "../models/linkOfPath";
 import { viewFolder } from "../views/nodes/folders";
 import { linkCfg } from "../views/nodes/pathsContainers";
-import { setListenerfForLink } from "./linksOfPath";
+import { openCluster, setListenerfForLink } from "./linksOfPath";
 import { setListeners } from "./listeners";
 
 const createButtons = () => {
@@ -33,6 +33,7 @@ const startConfig = (() => {
     rootFolder.setLink(ClusterLink(rootFolder));
     createButtons();
     OpenedFolder.setOpenedFolder(rootFolder);
+    openCluster(rootFolder.getLink());
 })();
 
 const setButtonsListeners = (() => {
@@ -85,6 +86,7 @@ export const viewPathsTree = (newFolder) => {
     let container = OpenedFolder.getOpenedFolder().getCluster();
     container.style.paddingLeft += '1vh';
     const link = ClusterLink(newFolder);
+    link.getCluster().style.display = 'none';
     link.getNode().appendChild(link.getCluster());
     setListenerfForLink(link);
     newFolder.setLink(link);

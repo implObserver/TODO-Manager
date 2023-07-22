@@ -112,9 +112,8 @@ span {
 }
 
 .link-wrapper {
-    display: flex;
+    display: grid;
     padding: 0.3vh;
-    flex-direction: column;
     border-top: 0.2vh #36bb36 solid;
     border-left: 0.2vh #36bb36 solid;
     cursor: pointer;

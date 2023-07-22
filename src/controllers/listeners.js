@@ -47,6 +47,7 @@ export const setListeners = () => {
     const forButtonToClusterPaths = (node, link) => {
         let flag;
         const clickNode = node.addEventListener('click', e => {
+            console.log('w')
             flag = document.defaultView.getComputedStyle(link.getCluster()).display;
             if (flag === 'none') {
                 openCluster(link);

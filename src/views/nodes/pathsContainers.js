@@ -19,8 +19,8 @@ export const openPathsSideBar = () => {
 export const getLinkNodes = (name) => {
     const nodeWrapper = Tools.createNode('div', 'link-wrapper');
     const closeCluster = Tools.createNode('div', 'close-cluster');
-    const arrowDown = document.querySelector('.arrow-down').cloneNode(true);
-    closeCluster.appendChild(arrowDown);
+    const arrowRight = getNodeArrowRight();
+    closeCluster.appendChild(arrowRight);
     const nodeLink = Tools.getNodeWithSpan('div', `/${name}`, 'link');
     Tools.appendChilds(nodeWrapper, closeCluster, nodeLink);
     return nodeWrapper;
