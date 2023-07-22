@@ -51,14 +51,16 @@ span {
 
 }
 
-.paths-container::-webkit-scrollbar, .name::-webkit-scrollbar {
+.paths-container::-webkit-scrollbar,
+.name::-webkit-scrollbar,
+.folders::-webkit-scrollbar {
     display: none;
     scrollbar-width: none;
 }
 
 ::-webkit-scrollbar {
     height: min(1vh, 10vw);
-    
+
 }
 
 ::-webkit-scrollbar-thumb {
@@ -86,7 +88,8 @@ span {
     align-content: start;
     max-width: 30vw;
     width: min-content;
-    height: 100vh;
+    height: 93vh;
+    max-height: inherit;
     overflow: scroll;
     background-color: #e9f5e9;
 }
@@ -168,7 +171,8 @@ span {
     align-content: start;
     align-items: center;
     max-width: inherit;
-    max-height: inherit;
+    overflow: scroll;
+    height: 93vh;
     background-color: #e9f5e9;
     font-size: var(--font-size-to-folder);
 }
@@ -215,7 +219,7 @@ span {
     max-width: 60%;
     max-height: inherit;
     overflow: scroll;
-   
+
 }
 
 .templateFolder>.name,

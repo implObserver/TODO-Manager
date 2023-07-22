@@ -3,6 +3,7 @@ import { ButtonForAddFolder, ButtonForCloseFolder, Folder, OpenedFolder } from "
 import { ClusterLink } from "../models/linkOfPath";
 import { viewFolder } from "../views/nodes/folders";
 import { linkCfg } from "../views/nodes/pathsContainers";
+import { setListenerfForLink } from "./linksOfPath";
 import { setListeners } from "./listeners";
 
 const createButtons = () => {
@@ -28,6 +29,7 @@ export const RootFolder = (() => {
 
 const startConfig = (() => {
     let rootFolder = RootFolder.getRootFolder();
+    rootFolder.setParent(rootFolder);
     rootFolder.setLink(ClusterLink(rootFolder));
     createButtons();
     OpenedFolder.setOpenedFolder(rootFolder);
@@ -43,6 +45,7 @@ export const openFolder = (folder) => {
     createButtons();
     viewFolders(folder.getInnerFolders());
     OpenedFolder.setOpenedFolder(folder);
+    openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
 }
 
 const clearFoldersContainer = () => {
@@ -82,13 +85,26 @@ export const viewPathsTree = (newFolder) => {
     let container = OpenedFolder.getOpenedFolder().getCluster();
     container.style.paddingLeft += '1vh';
     const link = ClusterLink(newFolder);
-    let color = Tools.random_rgba();
-    console.log(link.getNode())
     link.getNode().appendChild(link.getCluster());
-    linkCfg(link, newFolder);
+    setListenerfForLink(link);
     newFolder.setLink(link);
     container.appendChild(link.getNode())
+    openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
+}
 
+const openClusterWhenAddingFolder = (folder) => {
+    let cluster = folder.getCluster();
+    let button = folder.getLink().getNode().querySelector('.close-cluster');
+    if (folder.getId() !== 0) {
+        if (document.defaultView.getComputedStyle(cluster).display === 'none') {
+            button.click();
+        }
+        openClusterWhenAddingFolder(folder.getParent());
+    } else if (folder.getId() === 0) {
+        if (document.defaultView.getComputedStyle(cluster).display === 'none') {
+            button.click();
+        }
+    }
 }
 
 const handler = (folders) => {

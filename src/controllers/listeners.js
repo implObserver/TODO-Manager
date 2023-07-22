@@ -48,7 +48,6 @@ export const setListeners = () => {
         let flag;
         const clickNode = node.addEventListener('click', e => {
             flag = document.defaultView.getComputedStyle(link.getCluster()).display;
-            console.log(flag);
             if (flag === 'none') {
                 openCluster(link);
             } else {
