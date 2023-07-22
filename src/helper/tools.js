@@ -93,7 +93,30 @@ const Tools = (() => {
         r.style.setProperty(cssVar, `${size}px`);
     }
 
-    return { relativeFont, removeChildsAfter, displayMode, smoothVisibilityGroup, smoothVisibility, rgba2hex, getNodeWithSpan, setAttributes, createNode, appendChilds, setUpSpan, removeChilds, addClasses };
+    var getSiblings = function (elem) {
+
+        // Setup siblings array and get the first sibling
+        var siblings = [];
+        var sibling = elem.parentNode.firstChild;
+
+        // Loop through each sibling and push to the array
+        while (sibling) {
+            if (sibling.nodeType === 1 && sibling !== elem) {
+                siblings.push(sibling);
+            }
+            sibling = sibling.nextSibling
+        }
+
+        return siblings;
+
+    };
+
+    function random_rgba() {
+        var o = Math.round, r = Math.random, s = 255;
+        return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + '0.4' + ')';
+    }
+
+    return { random_rgba, getSiblings, relativeFont, removeChildsAfter, displayMode, smoothVisibilityGroup, smoothVisibility, rgba2hex, getNodeWithSpan, setAttributes, createNode, appendChilds, setUpSpan, removeChilds, addClasses };
 })();
 
 export { Tools }

@@ -1,6 +1,7 @@
 import { getFolderNode } from "../views/nodes/folder";
 import { getButtonForAddFolder } from "../views/nodes/ButtonForAddFolder";
 import { getButtonForCloseFolder } from "../views/nodes/ButtonForCloseFolder";
+import { createCluster, getPathsCluster } from "../views/nodes/pathsContainers";
 
 export const Folder = (ids, folder = 0) => {
     let id = ids;
@@ -9,6 +10,8 @@ export const Folder = (ids, folder = 0) => {
     let parent = folder;
     const innerFolders = []
     const node = getFolderNode(id);
+    let link;
+    let cluster = createCluster();
 
     const addFolder = (folder) => {
         const newId = `${id}_${count}`;
@@ -50,7 +53,19 @@ export const Folder = (ids, folder = 0) => {
         return name;
     }
 
-    return { setParent, getParent, addFolder, del, getNode, getInnerFolders, getId, setName, getName };
+    const setLink = (node) => {
+        link = node;
+    }
+
+    const getLink = () => {
+        return link;
+    }
+
+    const getCluster = () => {
+        return cluster;
+    }
+
+    return { getCluster, getLink, setLink, setParent, getParent, addFolder, del, getNode, getInnerFolders, getId, setName, getName };
 }
 
 export const ButtonForAddFolder = (() => {

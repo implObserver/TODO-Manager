@@ -1,15 +1,14 @@
 import { Tools } from "../helper/tools";
 import { OpenedFolder } from "../models/folderModels";
-import { addLinkToPath, removeLinkInPath } from "../views/nodes/content";
-import { getPathsContainer } from "../views/nodes/pathsContainer";
-import { createFolder, openFolder, setFontSizeToFolders } from "./foldersControllers";
+import { threePathsCloseToggle } from "../models/linkOfPath";
+import { createFolder, openFolder } from "./foldersControllers";
+import { addLinkToPath, closeCluster, openCluster, removeLinkInPath } from "./linksOfPath";
 
 export const setListeners = () => {
     const forFolder = (currentFolder) => {
         let node = currentFolder.getNode();
         const clickFolder = node.addEventListener('dblclick', e => {
             openFolder(currentFolder);
-            addLinkToPath(currentFolder);
         });
     }
 
@@ -17,7 +16,7 @@ export const setListeners = () => {
         let node = button.getNode();
         const clickButton = node.addEventListener('dblclick', e => {
             createFolder();
-            window.scrollTo(0, document.body.scrollHeight);
+            //window.scrollTo(0, document.body.scrollHeight);
         });
     }
 
@@ -25,33 +24,43 @@ export const setListeners = () => {
         let node = button.getNode();
         const clickButton = node.addEventListener('dblclick', e => {
             let openedFolder = OpenedFolder.getOpenedFolder();
-            removeLinkInPath();
             openFolder(openedFolder.getParent());
         });
     }
 
-    const forLinkOfPath = (link) => {
-        let path = document.querySelector('.chain-folders');
-        let node = link.getNode();
+    const forLinkOfMapPaths = (link) => {
+        let node = link.getNode().querySelector('.link');
         const clickNode = node.addEventListener('click', e => {
-            Tools.removeChildsAfter(path, node);
+            e.stopPropagation();
             openFolder(link.getFolder());
         });
-    }
-
-    const forButtonToOpenPaths = () => {
-        let node = document.querySelector('paths');
-        const clickPaths = node.addEventListener('click', e => {
-            let container = getPathsContainer();
-
+        const mouseOverNode = node.addEventListener('mouseover', e => {
+            e.stopPropagation();
+            node.style.backgroundColor = '#9cfd9c';
+        });
+        const mouseOutNode = node.addEventListener('mouseout', e => {
+            e.stopPropagation();
+            node.style.backgroundColor = '#e9f5e9';
         });
     }
 
-    const forWIndow = (() => {
-        const resize = window.addEventListener('resize', e => {
-            setFontSizeToFolders();
+    const forButtonToClusterPaths = (node, link) => {
+        let flag;
+        const clickNode = node.addEventListener('click', e => {
+            flag = document.defaultView.getComputedStyle(link.getCluster()).display;
+            console.log(flag);
+            if (flag === 'none') {
+                openCluster(link);
+            } else {
+                closeCluster(link);
+            }
         });
+        return { close };
+    }
+
+    const forFolders = (() => {
+
     })();
 
-    return { forFolder, forButtonToAddFolder, forButtonToCloseFolder, forLinkOfPath }
+    return { forButtonToClusterPaths, forLinkOfMapPaths, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
 }

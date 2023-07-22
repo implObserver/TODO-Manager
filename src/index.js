@@ -1,9 +1,17 @@
-import { createFolder, openFolder } from './controllers/foldersControllers'
-import { Folder } from './models/folderModels';
+import { RootFolder, RootLink, createFolder, openFolder, setResizeObservers, viewPathsTree } from './controllers/foldersControllers'
+import { addLinkToPath, setListenerfForLink } from './controllers/linksOfPath';
 import './views/css/main.css'
-import { addLinkToPath } from './views/nodes/content';
+import { viewRootPathsThree } from './views/nodes/pathsContainers';
 
-let zeroFolder = Folder(0);
-zeroFolder.setParent(zeroFolder);
-openFolder(zeroFolder);
-addLinkToPath(zeroFolder);
+const start = () => {
+    const rootFolder = RootFolder.getRootFolder();
+    setListenerfForLink(rootFolder.getLink());
+    setResizeObservers();
+    viewRootPathsThree();
+}
+
+start();
+
+for (let i = 0; i < 1; i++) {
+    createFolder();
+}
