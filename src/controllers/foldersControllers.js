@@ -1,8 +1,7 @@
 import { Tools } from "../helper/tools";
-import { ButtonForAddFolder, ButtonForCloseFolder, Folder, OpenedFolder } from "../models/folderModels";
+import { ButtonForAddFolder, ButtonForCloseFolder, Folder, OpenedFolder, RootFolder } from "../models/folderModels";
 import { ClusterLink } from "../models/linkOfPath";
 import { viewFolder } from "../views/nodes/folders";
-import { linkCfg } from "../views/nodes/pathsContainers";
 import { openCluster, setListenerfForLink } from "./linksOfPath";
 import { setListeners } from "./listeners";
 
@@ -18,14 +17,6 @@ const createButtonToAddFolder = () => {
 const createButtonToCloseFolder = () => {
     viewFolder(ButtonForCloseFolder.getNode(), 'close');
 }
-
-export const RootFolder = (() => {
-    let rootFolder = Folder(0);
-    const getRootFolder = () => {
-        return rootFolder;
-    }
-    return { getRootFolder };
-})();
 
 const startConfig = (() => {
     let rootFolder = RootFolder.getRootFolder();

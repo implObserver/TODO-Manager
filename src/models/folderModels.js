@@ -1,17 +1,17 @@
 import { getFolderNode } from "../views/nodes/folder";
 import { getButtonForAddFolder } from "../views/nodes/ButtonForAddFolder";
 import { getButtonForCloseFolder } from "../views/nodes/ButtonForCloseFolder";
-import { createCluster, getPathsCluster } from "../views/nodes/pathsContainers";
+import { createCluster } from "../views/nodes/pathsContainers";
 
 export const Folder = (ids, folder = 0) => {
     let id = ids;
-    let count = 0;
     let name;
-    let parent = folder;
-    const innerFolders = []
-    const node = getFolderNode(id);
     let link;
+    let count = 0;
+    let parent = folder;
     let cluster = createCluster();
+    const node = getFolderNode(id);
+    const innerFolders = []
 
     const addFolder = (folder) => {
         const newId = `${id}_${count}`;
@@ -68,6 +68,25 @@ export const Folder = (ids, folder = 0) => {
     return { getCluster, getLink, setLink, setParent, getParent, addFolder, del, getNode, getInnerFolders, getId, setName, getName };
 }
 
+export const RootFolder = (() => {
+    let rootFolder = Folder(0);
+    const getRootFolder = () => {
+        return rootFolder;
+    }
+    return { getRootFolder };
+})();
+
+export const OpenedFolder = (() => {
+    let openedFolder;
+    const setOpenedFolder = (folder) => {
+        openedFolder = folder;
+    }
+    const getOpenedFolder = () => {
+        return openedFolder;
+    }
+    return { setOpenedFolder, getOpenedFolder }
+})();
+
 export const ButtonForAddFolder = (() => {
     const node = getButtonForAddFolder();
     const getNode = () => {
@@ -82,15 +101,4 @@ export const ButtonForCloseFolder = (() => {
         return node;
     }
     return { getNode };
-})();
-
-export const OpenedFolder = (() => {
-    let openedFolder;
-    const setOpenedFolder = (folder) => {
-        openedFolder = folder;
-    }
-    const getOpenedFolder = () => {
-        return openedFolder;
-    }
-    return { setOpenedFolder, getOpenedFolder }
 })();

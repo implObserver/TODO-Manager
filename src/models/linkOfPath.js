@@ -1,4 +1,3 @@
-import { Tools } from "../helper/tools";
 import { getLinkNodes } from "../views/nodes/pathsContainers";
 
 export const Link = (iFolder) => {

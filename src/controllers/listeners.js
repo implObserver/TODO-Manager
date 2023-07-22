@@ -1,8 +1,6 @@
-import { Tools } from "../helper/tools";
 import { OpenedFolder } from "../models/folderModels";
-import { threePathsCloseToggle } from "../models/linkOfPath";
 import { createFolder, openFolder } from "./foldersControllers";
-import { addLinkToPath, closeCluster, openCluster, removeLinkInPath } from "./linksOfPath";
+import { closeCluster, openCluster } from "./linksOfPath";
 
 export const setListeners = () => {
     const forFolder = (currentFolder) => {
@@ -16,7 +14,6 @@ export const setListeners = () => {
         let node = button.getNode();
         const clickButton = node.addEventListener('dblclick', e => {
             createFolder();
-            //window.scrollTo(0, document.body.scrollHeight);
         });
     }
 
@@ -47,7 +44,6 @@ export const setListeners = () => {
     const forButtonToClusterPaths = (node, link) => {
         let flag;
         const clickNode = node.addEventListener('click', e => {
-            console.log('w')
             flag = document.defaultView.getComputedStyle(link.getCluster()).display;
             if (flag === 'none') {
                 openCluster(link);
@@ -57,10 +53,6 @@ export const setListeners = () => {
         });
         return { close };
     }
-
-    const forFolders = (() => {
-
-    })();
 
     return { forButtonToClusterPaths, forLinkOfMapPaths, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
 }

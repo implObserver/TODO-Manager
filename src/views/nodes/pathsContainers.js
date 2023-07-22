@@ -1,10 +1,9 @@
-import { RootFolder } from "../../controllers/foldersControllers";
 import { setListenerfForLink } from "../../controllers/linksOfPath";
 import { Tools } from "../../helper/tools"
+import { RootFolder } from "../../models/folderModels";
 
 export const viewRootPathsThree = () => {
     let link = RootFolder.getRootFolder().getLink();
-    //link.getNode().style.backgroundColor = '#e9f5e9';
     link.getNode().style.border = '0.3vh #36bb36 solid';
     link.getNode().appendChild(link.getCluster());
     document.querySelector('.paths-container').appendChild(link.getNode());
@@ -20,8 +19,8 @@ export const getLinkNodes = (name) => {
     const nodeWrapper = Tools.createNode('div', 'link-wrapper');
     const closeCluster = Tools.createNode('div', 'close-cluster');
     const arrowRight = getNodeArrowRight();
-    closeCluster.appendChild(arrowRight);
     const nodeLink = Tools.getNodeWithSpan('div', `/${name}`, 'link');
+    closeCluster.appendChild(arrowRight);
     Tools.appendChilds(nodeWrapper, closeCluster, nodeLink);
     return nodeWrapper;
 }

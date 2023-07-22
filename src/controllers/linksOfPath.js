@@ -4,9 +4,7 @@ import { setListeners } from "./listeners";
 
 export const closeCluster = (link) => {
     let cluster = link.getCluster();
-    let close = link.getNode().querySelector('.close-cluster');
-    Tools.removeChilds(close);
-    close.appendChild(getNodeArrowRight());
+    switchCloseButtonSvg(link, getNodeArrowRight());
     Tools.smoothVisibility().close(cluster, 1, 0, 200, 'forwards');
     setTimeout(() => {
         cluster.style.display = 'none';
@@ -15,9 +13,7 @@ export const closeCluster = (link) => {
 
 export const openCluster = (link) => {
     let cluster = link.getCluster();
-    let close = link.getNode().querySelector('.close-cluster');
-    Tools.removeChilds(close);
-    close.appendChild(getNodeArrowDown());
+    switchCloseButtonSvg(link, getNodeArrowDown());
     cluster.style.display = 'grid';
     Tools.smoothVisibility().open(cluster, 0, 1, 200, 'forwards');
 }
@@ -26,4 +22,10 @@ export const setListenerfForLink = (link) => {
     const clusterClose = link.getNode().querySelector('.close-cluster');
     setListeners().forLinkOfMapPaths(link);
     setListeners().forButtonToClusterPaths(clusterClose, link);
+}
+
+const switchCloseButtonSvg = (link, child) => {
+    let close = link.getNode().querySelector('.close-cluster');
+    Tools.removeChilds(close);
+    close.appendChild(child);
 }
