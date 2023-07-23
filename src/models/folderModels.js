@@ -3,8 +3,70 @@ import { getButtonForAddFolder } from "../views/nodes/ButtonForAddFolder";
 import { getButtonForCloseFolder } from "../views/nodes/ButtonForCloseFolder";
 import { createCluster } from "../views/nodes/pathsContainers";
 import { openFolder } from "../controllers/foldersControllers";
+import { Element } from "./element";
 
-export const Folder = (ids, folder = 0) => {
+export const OpenedFolder = (() => {
+    let openedFolder;
+    const setOpenedFolder = (folder) => {
+        openedFolder = folder;
+    }
+    const getOpenedFolder = () => {
+        return openedFolder;
+    }
+    return { setOpenedFolder, getOpenedFolder }
+})();
+
+export const Folder = (id) => {
+    const prototype = Element(id);
+    let cluster = createCluster();
+    const node = getFolderNode(id);
+    let innerFolders = []
+    let innerTasks = [];
+
+    const addFolder = () => {
+        const newId = `${prototype.getId()}_${prototype.getCount()}`;
+        prototype.setCount();
+        let newFolder = Folder(newId);
+        innerFolders.push(newFolder);
+        return newFolder;
+    }
+
+    const del = () => {
+        let filter = prototype.getParent().getInnerFolders().filter((folder) => folder !== prototype.getLink().getFolder());
+        setInnerFolders([]);
+        prototype.getParent().getCluster().removeChild(prototype.getLink().getNode());
+        prototype.getParent().setInnerFolders(filter);
+        openFolder(prototype.getParent());
+    }
+
+    const setInnerFolders = (arr) => {
+        innerFolders = arr;
+    }
+
+    const getInnerFolders = () => {
+        return innerFolders;
+    }
+
+    const getCluster = () => {
+        return cluster;
+    }
+
+    const getNode = () => {
+        return node;
+    }
+
+    const addTask = (task) => {
+        innerTasks.push(task);
+    }
+
+    const getInnerTasks = () => {
+        return innerTasks;
+    }
+
+    return Object.assign({}, prototype, { addTask, getInnerTasks, addFolder, del, setInnerFolders, getInnerFolders, getCluster, getNode });
+}
+
+/*export const Folder = (ids, folder = 0) => {
     let id = ids;
     let name;
     let link;
@@ -75,7 +137,7 @@ export const Folder = (ids, folder = 0) => {
     }
 
     return { setInnerFolders, getCluster, getLink, setLink, setParent, getParent, addFolder, del, getNode, getInnerFolders, getId, setName, getName };
-}
+}*/
 
 export const RootFolder = (() => {
     let rootFolder = Folder(0);
@@ -83,17 +145,6 @@ export const RootFolder = (() => {
         return rootFolder;
     }
     return { getRootFolder };
-})();
-
-export const OpenedFolder = (() => {
-    let openedFolder;
-    const setOpenedFolder = (folder) => {
-        openedFolder = folder;
-    }
-    const getOpenedFolder = () => {
-        return openedFolder;
-    }
-    return { setOpenedFolder, getOpenedFolder }
 })();
 
 export const ButtonForAddFolder = (() => {

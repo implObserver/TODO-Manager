@@ -97,7 +97,7 @@ span {
     display: grid;
     grid-template-columns: min-content 1fr max-content;
     border-top: 0.2vh #36bb36 solid;
-   
+
 }
 
 .link {
@@ -169,6 +169,7 @@ span {
     align-items: center;
     max-width: inherit;
     overflow: scroll;
+    padding: 1vh;
     height: 93vh;
     background-color: #e9f5e9;
     font-size: var(--font-size-to-folder);
@@ -176,6 +177,7 @@ span {
 
 .folder,
 .templateFolder,
+.templateTask,
 .back {
     display: grid;
     grid-template-rows: 1fr min-content;
@@ -203,6 +205,16 @@ span {
     max-width: inherit;
     max-height: inherit;
     min-width: 50px;
+}
+
+.icon-wrapper>.templateTaskSvg {
+    display: flex;
+    max-width: inherit;
+    max-height: inherit;
+    width: 14vh;
+    align-self: center;
+    align-items: center;
+    justify-self: center;
 }
 
 .name {
@@ -252,6 +264,11 @@ span {
 .templateFolder:hover {
     animation-fill-mode: forwards;
     animation: 15s infinite alternate dash;
+}
+
+.templateTask:hover {
+    animation-fill-mode: forwards;
+    animation: 5s infinite alternate dash;
 }
 
 @keyframes dash {

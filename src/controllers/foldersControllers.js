@@ -1,6 +1,7 @@
 import { Tools } from "../helper/tools";
 import { ButtonForAddFolder, ButtonForCloseFolder, Folder, OpenedFolder, RootFolder } from "../models/folderModels";
 import { ClusterLink } from "../models/linkOfPath";
+import { ButtonForAddTask } from "../models/taskModels";
 import { viewFolder } from "../views/nodes/folders";
 import { openCluster, setListenerfForLink } from "./linksOfPath";
 import { setListeners } from "./listeners";
@@ -8,6 +9,11 @@ import { setListeners } from "./listeners";
 const createButtons = () => {
     createButtonToAddFolder();
     createButtonToCloseFolder();
+    createButtonForAddTask();
+}
+
+const createButtonForAddTask = () => {
+    viewFolder(ButtonForAddTask.getNode(), 'task');
 }
 
 const createButtonToAddFolder = () => {
@@ -54,7 +60,7 @@ const clearFoldersContainer = () => {
 }
 
 export const createFolder = (folder = OpenedFolder.getOpenedFolder()) => {
-    let newFolder = folder.addFolder(folder);
+    let newFolder = folder.addFolder();
     viewFolder(newFolder.getNode());
     setListeners().forFolder(newFolder);
     viewPathsTree(newFolder);

@@ -13,8 +13,6 @@ const start = () => {
 
 start();
 
-document.querySelector('.folders').appendChild(document.querySelector('.task'));
-
 for (let i = 0; i < 0; i++) {
     createFolder();
     let folder = OpenedFolder.getOpenedFolder().getInnerFolders()[0];
