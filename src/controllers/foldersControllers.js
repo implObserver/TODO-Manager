@@ -18,6 +18,13 @@ const createButtonToCloseFolder = () => {
     viewFolder(ButtonForCloseFolder.getNode(), 'close');
 }
 
+const viewLinkOpenedFolder = (folder) => {
+    let openedFolderLink = OpenedFolder.getOpenedFolder().getLink().getNode();
+    openedFolderLink.querySelector('.link').style.backgroundColor = '#e9f5e9';
+    folder.getLink().getNode().querySelector('.link').style.backgroundColor = '#60d0e4';
+    OpenedFolder.setOpenedFolder(folder);
+}
+
 const startConfig = (() => {
     let rootFolder = RootFolder.getRootFolder();
     rootFolder.setParent(rootFolder);
@@ -25,6 +32,7 @@ const startConfig = (() => {
     createButtons();
     OpenedFolder.setOpenedFolder(rootFolder);
     openCluster(rootFolder.getLink());
+    viewLinkOpenedFolder(rootFolder);
 })();
 
 const setButtonsListeners = (() => {
@@ -36,7 +44,7 @@ export const openFolder = (folder) => {
     clearFoldersContainer();
     createButtons();
     viewFolders(folder.getInnerFolders());
-    OpenedFolder.setOpenedFolder(folder);
+    viewLinkOpenedFolder(folder);
     openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
 }
 
@@ -80,6 +88,8 @@ export const viewPathsTree = (newFolder) => {
     link.getCluster().style.display = 'none';
     link.getNode().appendChild(link.getCluster());
     setListenerfForLink(link);
+
+    setListeners().forButtonToDeleteLink(link);
     newFolder.setLink(link);
     container.appendChild(link.getNode())
     openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());

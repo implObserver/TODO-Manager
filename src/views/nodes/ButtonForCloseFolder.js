@@ -1,6 +1,6 @@
 import { Tools } from "../../helper/tools";
 
-const getWrapperIcon = () => {
+const getSvgInWrapper = () => {
     let wrapperIcon = Tools.createNode('div', 'icon-wrapper');
     let icon = document.querySelector('.arrow-left');
     Tools.appendChilds(wrapperIcon, icon);
@@ -15,6 +15,6 @@ export const getButtonForCloseFolder = () => {
 
 const buttonForCloseFolderAssembly = () => {
     const folder = Tools.createNode('div', 'back');
-    Tools.appendChilds(folder, getWrapperIcon());
+    Tools.appendChilds(folder, getSvgInWrapper());
     return folder;
 }

@@ -1,4 +1,5 @@
 import { setListenerfForLink } from "../../controllers/linksOfPath";
+import { setListeners } from "../../controllers/listeners";
 import { Tools } from "../../helper/tools"
 import { RootFolder } from "../../models/folderModels";
 
@@ -7,6 +8,7 @@ export const viewRootPathsThree = () => {
     link.getNode().style.border = '0.3vh #36bb36 solid';
     link.getNode().appendChild(link.getCluster());
     document.querySelector('.paths-container').appendChild(link.getNode());
+    document.querySelector('.delete-link').style.display = 'none';
 }
 
 export const openPathsSideBar = () => {
@@ -18,10 +20,14 @@ export const openPathsSideBar = () => {
 export const getLinkNodes = (name) => {
     const nodeWrapper = Tools.createNode('div', 'link-wrapper');
     const closeCluster = Tools.createNode('div', 'close-cluster');
+    const linkBody = Tools.createNode('div', 'link-body');
     const arrowRight = getNodeArrowRight();
     const nodeLink = Tools.getNodeWithSpan('div', `/${name}`, 'link');
+    const del = Tools.createNode('div', 'delete-link');
+    del.appendChild(document.querySelector('.delete').cloneNode(true));
     closeCluster.appendChild(arrowRight);
-    Tools.appendChilds(nodeWrapper, closeCluster, nodeLink);
+    Tools.appendChilds(linkBody, closeCluster, nodeLink, del)
+    Tools.appendChilds(nodeWrapper, linkBody);
     return nodeWrapper;
 }
 

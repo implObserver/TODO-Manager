@@ -26,18 +26,21 @@ export const setListeners = () => {
     }
 
     const forLinkOfMapPaths = (link) => {
+        let color;
         let node = link.getNode().querySelector('.link');
         const clickNode = node.addEventListener('click', e => {
             e.stopPropagation();
             openFolder(link.getFolder());
+            color = document.defaultView.getComputedStyle(node).backgroundColor;
         });
         const mouseOverNode = node.addEventListener('mouseover', e => {
             e.stopPropagation();
+            color = document.defaultView.getComputedStyle(node).backgroundColor;
             node.style.backgroundColor = '#9cfd9c';
         });
         const mouseOutNode = node.addEventListener('mouseout', e => {
             e.stopPropagation();
-            node.style.backgroundColor = '#e9f5e9';
+            node.style.backgroundColor = color;
         });
     }
 
@@ -54,5 +57,16 @@ export const setListeners = () => {
         return { close };
     }
 
-    return { forButtonToClusterPaths, forLinkOfMapPaths, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
+    const forButtonToDeleteLink = (link) => {
+        let node = link.getNode().querySelector('.delete-link');
+        const clickNode = node.addEventListener('click', e => {
+            let folder = link.getFolder();
+            if (confirm('Вы действительно хотите удалить папку и всё ее содержимое?')) {
+                folder.del();
+            } else {
+            }
+        })
+    }
+
+    return { forButtonToDeleteLink, forButtonToClusterPaths, forLinkOfMapPaths, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
 }

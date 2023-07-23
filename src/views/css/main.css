@@ -86,16 +86,42 @@ span {
 
 .link-wrapper {
     display: grid;
-    padding-right: 0.3vh;
     border-left: 0.2vh #36bb36 solid;
+    overflow: hidden;
     cursor: pointer;
-    width: min-content;
+    width: inherit;
+    min-width: 100%;
+}
+
+.link-body {
+    display: grid;
+    grid-template-columns: min-content 1fr max-content;
+    border-top: 0.2vh #36bb36 solid;
+   
+}
+
+.link {
+    display: flex;
+    align-items: center;
+}
+
+.delete-link {
+    display: flex;
+    justify-content: end;
+    width: 3vh;
+    height: 100%;
+}
+
+.delete-link :hover {
+    display: flex;
+    justify-content: center;
+    background-color: red;
 }
 
 .close-cluster {
     display: flex;
     width: 2vh;
-    height: min-content;
+    height: 100%;
     z-index: 100;
 }
 
@@ -103,9 +129,6 @@ span {
     background-color: #37f037;
 }
 
-.link>span {
-    border-bottom: 0.2vh #36bb36 solid;
-}
 /*.paths {
     display: flex;
     width: 2vh;
@@ -193,7 +216,6 @@ span {
     max-width: 60%;
     max-height: inherit;
     overflow: scroll;
-
 }
 
 .templateFolder>.name,
@@ -242,9 +264,7 @@ span {
     }
 }
 
-@media screen and (max-aspect-ratio:1/1.0000001) {
-    
-}
+@media screen and (max-aspect-ratio:1/1.0000001) {}
 
 @media screen and (min-aspect-ratio: 1/1) and (min-width: 536px) {
 
@@ -263,15 +283,9 @@ span {
     }
 
     .paths-cluster {
-        display: grid;
-        width: min-content;
+        display: flex;
+        justify-self: end;
+        width: max-content;
     }
 
-    .paths-cluster>span {
-        display: grid;
-        gap: 0.4vh;
-        grid-template-columns: min-content min-content;
-        border-radius: 0.4vh;
-        width: min-content;
-    }
 }
