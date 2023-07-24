@@ -99,10 +99,16 @@ export const setFontSizeToFolders = (template) => {
 export const viewLink = (element, type = 'folder') => {
     let link = type === 'folder' ? getCustomLink(element) : TaskLink(element);
     let container = OpenedFolder.getOpenedFolder().getCluster();
+    let innerTasks = OpenedFolder.getOpenedFolder().getInnerTasks();
     container.style.paddingLeft += '1vh';
     setListenerfForLink(link);
     element.setLink(link);
-    container.appendChild(link.getNode());
+    if (innerTasks.length > 0 && type === 'folder') {
+        let lastNode = innerTasks.at(0).getLink().getNode();
+        container.insertBefore(link.getNode(), lastNode);
+    } else {
+        container.appendChild(link.getNode());
+    }
     openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
 }
 
