@@ -22,10 +22,12 @@ export const Folder = (id) => {
     const node = getFolderNode(id);
     let innerFolders = []
     let innerTasks = [];
+    let folderCount = 0;
+    let taskCount = 0;
 
     const addFolder = () => {
-        const newId = `${prototype.getId()}_${prototype.getCount()}`;
-        prototype.setCount();
+        const newId = `${prototype.getId()}_${folderCount}`;
+        setFolderCount();
         let newFolder = Folder(newId);
         innerFolders.push(newFolder);
         return newFolder;
@@ -33,9 +35,9 @@ export const Folder = (id) => {
 
     const del = () => {
         let filter = prototype.getParent().getInnerFolders().filter((folder) => folder !== prototype.getLink().getFolder());
-        setInnerFolders([]);
         prototype.getParent().getCluster().removeChild(prototype.getLink().getNode());
         prototype.getParent().setInnerFolders(filter);
+        setInnerFolders([]);
         openFolder(prototype.getParent());
     }
 
@@ -56,14 +58,31 @@ export const Folder = (id) => {
     }
 
     const addTask = (task) => {
+        ++taskCount;
         innerTasks.push(task);
+    }
+
+    const removeTask = (task) => {
+        innerTasks = innerTasks.filter((e) => e !== task);
     }
 
     const getInnerTasks = () => {
         return innerTasks;
     }
 
-    return Object.assign({}, prototype, { addTask, getInnerTasks, addFolder, del, setInnerFolders, getInnerFolders, getCluster, getNode });
+    const setFolderCount = () => {
+        ++folderCount;
+    }
+
+    const setTaskCount = () => {
+        ++taskCount;
+    }
+
+    const getTaskCount = () => {
+        return taskCount;
+    }
+
+    return Object.assign({}, prototype, { removeTask, getTaskCount, setTaskCount, setFolderCount, addTask, getInnerTasks, addFolder, del, setInnerFolders, getInnerFolders, getCluster, getNode });
 }
 
 /*export const Folder = (ids, folder = 0) => {

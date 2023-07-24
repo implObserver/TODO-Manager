@@ -1,4 +1,4 @@
-import { getFolderLinkNode, getLinkNodes, getTaskLinkNode } from "../views/nodes/pathsContainers";
+import { getFolderLinkNode, getTaskLinkNode } from "../views/nodes/pathsContainers";
 
 const Link = (iElement) => {
     let element = iElement;

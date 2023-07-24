@@ -1,27 +1,27 @@
 import { Tools } from "../helper/tools";
 import { ButtonForAddFolder, ButtonForCloseFolder, Folder, OpenedFolder, RootFolder } from "../models/folderModels";
-import { ClusterLink } from "../models/linkOfPath";
-import { ButtonForAddTask } from "../models/taskModels";
-import { viewFolder } from "../views/nodes/folders";
+import { ClusterLink, TaskLink } from "../models/linkOfPath";
+import { ButtonForAddTask, Task } from "../models/taskModels";
+import { viewElement } from "../views/nodes/folders";
 import { openCluster, setListenerfForLink } from "./linksOfPath";
 import { setListeners } from "./listeners";
 
 const createButtons = () => {
+    createButtonForAddTask();
     createButtonToAddFolder();
     createButtonToCloseFolder();
-    createButtonForAddTask();
 }
 
 const createButtonForAddTask = () => {
-    viewFolder(ButtonForAddTask.getNode(), 'task');
+    viewElement(ButtonForAddTask.getNode(), 'add');
 }
 
 const createButtonToAddFolder = () => {
-    viewFolder(ButtonForAddFolder.getNode(), 'add');
+    viewElement(ButtonForAddFolder.getNode(), 'add');
 }
 
 const createButtonToCloseFolder = () => {
-    viewFolder(ButtonForCloseFolder.getNode(), 'close');
+    viewElement(ButtonForCloseFolder.getNode(), 'close');
 }
 
 const viewLinkOpenedFolder = (folder) => {
@@ -35,21 +35,23 @@ const startConfig = (() => {
     let rootFolder = RootFolder.getRootFolder();
     rootFolder.setParent(rootFolder);
     rootFolder.setLink(ClusterLink(rootFolder));
-    createButtons();
     OpenedFolder.setOpenedFolder(rootFolder);
+    createButtons();
     openCluster(rootFolder.getLink());
     viewLinkOpenedFolder(rootFolder);
 })();
 
 const setButtonsListeners = (() => {
     setListeners().forButtonToAddFolder(ButtonForAddFolder);
+    setListeners().forButtonToAddTask(ButtonForAddTask);
     setListeners().forButtonToCloseFolder(ButtonForCloseFolder);
 })();
 
 export const openFolder = (folder) => {
     clearFoldersContainer();
     createButtons();
-    viewFolders(folder.getInnerFolders());
+    viewElements(folder.getInnerFolders());
+    viewElements(folder.getInnerTasks());
     viewLinkOpenedFolder(folder);
     openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
 }
@@ -61,16 +63,23 @@ const clearFoldersContainer = () => {
 
 export const createFolder = (folder = OpenedFolder.getOpenedFolder()) => {
     let newFolder = folder.addFolder();
-    viewFolder(newFolder.getNode());
+    viewElement(newFolder.getNode());
     setListeners().forFolder(newFolder);
-    viewPathsTree(newFolder);
+    viewLink(newFolder);
 }
 
+export const createTask = (folder = OpenedFolder.getOpenedFolder()) => {
+    let taskId = folder.getTaskCount();
+    let task = Task(taskId);
+    folder.addTask(task);
+    viewLink(task, 'task');
+    viewElement(task.getNode(), 'task');
+}
 
-const viewFolders = (folders) => {
-    for (let folder of folders) {
-        const node = folder.getNode();
-        viewFolder(node);
+const viewElements = (elements) => {
+    for (let element of elements) {
+        const node = element.getNode();
+        viewElement(node);
     }
 }
 
@@ -87,18 +96,21 @@ export const setFontSizeToFolders = (template) => {
     Tools.relativeFont(template, '--font-size-to-folder');
 }
 
-export const viewPathsTree = (newFolder) => {
+export const viewLink = (element, type = 'folder') => {
+    let link = type === 'folder' ? getCustomLink(element) : TaskLink(element);
     let container = OpenedFolder.getOpenedFolder().getCluster();
     container.style.paddingLeft += '1vh';
-    const link = ClusterLink(newFolder);
+    setListenerfForLink(link);
+    element.setLink(link);
+    container.appendChild(link.getNode());
+    openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
+}
+
+export const getCustomLink = (folder) => {
+    const link = ClusterLink(folder);
     link.getCluster().style.display = 'none';
     link.getNode().appendChild(link.getCluster());
-    setListenerfForLink(link);
-
-    setListeners().forButtonToDeleteLink(link);
-    newFolder.setLink(link);
-    container.appendChild(link.getNode())
-    openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
+    return link;
 }
 
 const openClusterWhenAddingFolder = (folder) => {

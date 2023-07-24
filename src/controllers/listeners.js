@@ -1,5 +1,5 @@
 import { OpenedFolder } from "../models/folderModels";
-import { createFolder, openFolder } from "./foldersControllers";
+import { createFolder, createTask, openFolder } from "./foldersControllers";
 import { closeCluster, openCluster } from "./linksOfPath";
 
 export const setListeners = () => {
@@ -14,6 +14,13 @@ export const setListeners = () => {
         let node = button.getNode();
         const clickButton = node.addEventListener('dblclick', e => {
             createFolder();
+        });
+    }
+
+    const forButtonToAddTask = (button) => {
+        let node = button.getNode();
+        const clickButton = node.addEventListener('dblclick', e => {
+            createTask();
         });
     }
 
@@ -60,13 +67,14 @@ export const setListeners = () => {
     const forButtonToDeleteLink = (link) => {
         let node = link.getNode().querySelector('.delete-link');
         const clickNode = node.addEventListener('click', e => {
-            let folder = link.getFolder();
+            
+            let element = link.getElement();
             if (confirm('Вы действительно хотите удалить папку и всё ее содержимое?')) {
-                folder.del();
+                element.del(element);
             } else {
             }
         })
     }
 
-    return { forButtonToDeleteLink, forButtonToClusterPaths, forLinkOfMapPaths, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
+    return { forButtonToAddTask, forButtonToDeleteLink, forButtonToClusterPaths, forLinkOfMapPaths, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
 }

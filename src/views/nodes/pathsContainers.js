@@ -20,16 +20,26 @@ export const openPathsSideBar = () => {
 const getTemplateLinkNode = (name, node) => {
     const nodeWrapper = Tools.createNode('div', 'link-wrapper');
     const linkBody = Tools.createNode('div', 'link-body');
-    const nodeLink = Tools.getNodeWithSpan('div', `/${name}`, 'link');
+    const nodeLink = Tools.getNodeWithSpan('div', `${name}`, 'link');
     const del = Tools.createNode('div', 'delete-link');
     del.appendChild(document.querySelector('.delete').cloneNode(true));
     Tools.appendChilds(linkBody, node, nodeLink, del);
     Tools.appendChilds(nodeWrapper, linkBody);
+    let color = Tools.random_rgba();
+    nodeWrapper.style.borderLeft = `0.3vh ${color} solid`;
+    nodeWrapper.style.borderTop = `0.3vh ${color} solid`;
+    setBorderColor(nodeWrapper);
     return nodeWrapper;
 }
 
+const setBorderColor = (node) => {
+    let color = Tools.random_rgba();
+    node.style.borderLeft = `0.3vh ${color} solid`;
+    node.style.borderTop = `0.3vh ${color} solid`;
+}
+
 export const getFolderLinkNode = (name) => {
-    let template = getTemplateLinkNode(name, forFolder());
+    let template = getTemplateLinkNode(`\\${name}`, forFolder());
     return template;
 }
 

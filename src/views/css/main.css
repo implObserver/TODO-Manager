@@ -86,7 +86,6 @@ span {
 
 .link-wrapper {
     display: grid;
-    border-left: 0.2vh #36bb36 solid;
     overflow: hidden;
     cursor: pointer;
     width: inherit;
@@ -96,7 +95,6 @@ span {
 .link-body {
     display: grid;
     grid-template-columns: min-content 1fr max-content;
-    border-top: 0.2vh #36bb36 solid;
 
 }
 
@@ -176,6 +174,7 @@ span {
 }
 
 .folder,
+.task,
 .templateFolder,
 .templateTask,
 .back {
@@ -207,11 +206,11 @@ span {
     min-width: 50px;
 }
 
-.icon-wrapper>.templateTaskSvg {
+.icon-wrapper>.templateTaskSvg,
+.icon-wrapper>.taskSvg {
     display: flex;
     max-width: inherit;
     max-height: inherit;
-    width: 14vh;
     align-self: center;
     align-items: center;
     justify-self: center;

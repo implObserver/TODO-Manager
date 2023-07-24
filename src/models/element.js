@@ -4,7 +4,6 @@ export const Element = (ids) => {
     let id = ids;
     let name;
     let link;
-    let count = 0;
     let parent = OpenedFolder.getOpenedFolder();
 
     const getId = () => {
@@ -35,15 +34,7 @@ export const Element = (ids) => {
         return parent;
     }
 
-    const setCount = () => {
-        ++count;
-    }
-
-    const getCount = () => {
-        return count;
-    }
-
     return {
-        getId, setName, getName, setLink, getLink, setParent, getParent, setCount, getCount
+        getId, setName, getName, setLink, getLink, setParent, getParent,
     }
 }

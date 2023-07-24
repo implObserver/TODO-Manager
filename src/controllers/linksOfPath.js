@@ -21,7 +21,10 @@ export const openCluster = (link) => {
 export const setListenerfForLink = (link) => {
     const clusterClose = link.getNode().querySelector('.close-cluster');
     setListeners().forLinkOfMapPaths(link);
-    setListeners().forButtonToClusterPaths(clusterClose, link);
+    if (clusterClose !== null) {
+        setListeners().forButtonToClusterPaths(clusterClose, link);
+    }
+    setListeners().forButtonToDeleteLink(link);
 }
 
 const switchCloseButtonSvg = (link, child) => {
