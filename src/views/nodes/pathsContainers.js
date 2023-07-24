@@ -57,13 +57,13 @@ const forFolder = () => {
 
 const forTask = () => {
     const taskPreview = Tools.createNode('div', 'task-preview');
-    const taskIcon = getNodeArrowRight();
+    const taskIcon = getTaskSvg();
     taskPreview.appendChild(taskIcon);
     return taskPreview;
 }
 
 export const getTaskSvg = () => {
-    return document.querySelector('.taskSvg').cloneNode(true);
+    return document.querySelector('.task-link-svg').cloneNode(true);
 }
 
 export const getNodeArrowDown = () => {

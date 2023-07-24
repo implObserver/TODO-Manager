@@ -103,7 +103,8 @@ span {
     align-items: center;
 }
 
-.delete-link {
+.delete-link,
+.task-link-svg {
     display: flex;
     justify-content: end;
     width: 3vh;

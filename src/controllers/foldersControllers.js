@@ -3,25 +3,25 @@ import { ButtonForAddFolder, ButtonForCloseFolder, Folder, OpenedFolder, RootFol
 import { ClusterLink, TaskLink } from "../models/linkOfPath";
 import { ButtonForAddTask, Task } from "../models/taskModels";
 import { viewElement } from "../views/nodes/folders";
-import { openCluster, setListenerfForLink } from "./linksOfPath";
+import { openCluster, openClusterWhenAddingFolder, setListenerfForLink } from "./linksOfPath";
 import { setListeners } from "./listeners";
 
 const createButtons = () => {
-    createButtonForAddTask();
-    createButtonToAddFolder();
     createButtonToCloseFolder();
+    createButtonToAddFolder();
+    createButtonForAddTask();
 }
 
 const createButtonForAddTask = () => {
-    viewElement(ButtonForAddTask.getNode(), 'add');
+    viewElement(ButtonForAddTask.getNode(), 'add').forOldElement();
 }
 
 const createButtonToAddFolder = () => {
-    viewElement(ButtonForAddFolder.getNode(), 'add');
+    viewElement(ButtonForAddFolder.getNode(), 'add').forOldElement();
 }
 
 const createButtonToCloseFolder = () => {
-    viewElement(ButtonForCloseFolder.getNode(), 'close');
+    viewElement(ButtonForCloseFolder.getNode(), 'close').forOldElement();
 }
 
 const viewLinkOpenedFolder = (folder) => {
@@ -50,9 +50,9 @@ const setButtonsListeners = (() => {
 export const openFolder = (folder) => {
     clearFoldersContainer();
     createButtons();
+    viewLinkOpenedFolder(folder);
     viewElements(folder.getInnerFolders());
     viewElements(folder.getInnerTasks());
-    viewLinkOpenedFolder(folder);
     openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
 }
 
@@ -63,7 +63,7 @@ const clearFoldersContainer = () => {
 
 export const createFolder = (folder = OpenedFolder.getOpenedFolder()) => {
     let newFolder = folder.addFolder();
-    viewElement(newFolder.getNode());
+    viewElement(newFolder.getNode()).forNewElement();
     setListeners().forFolder(newFolder);
     viewLink(newFolder);
 }
@@ -73,13 +73,13 @@ export const createTask = (folder = OpenedFolder.getOpenedFolder()) => {
     let task = Task(taskId);
     folder.addTask(task);
     viewLink(task, 'task');
-    viewElement(task.getNode(), 'task');
+    viewElement(task.getNode(), 'task').forNewElement();
 }
 
 const viewElements = (elements) => {
     for (let element of elements) {
         const node = element.getNode();
-        viewElement(node);
+        viewElement(node).forOldElement();
     }
 }
 
@@ -117,21 +117,6 @@ export const getCustomLink = (folder) => {
     link.getCluster().style.display = 'none';
     link.getNode().appendChild(link.getCluster());
     return link;
-}
-
-const openClusterWhenAddingFolder = (folder) => {
-    let cluster = folder.getCluster();
-    let button = folder.getLink().getNode().querySelector('.close-cluster');
-    if (folder.getId() !== 0) {
-        if (document.defaultView.getComputedStyle(cluster).display === 'none') {
-            button.click();
-        }
-        openClusterWhenAddingFolder(folder.getParent());
-    } else if (folder.getId() === 0) {
-        if (document.defaultView.getComputedStyle(cluster).display === 'none') {
-            button.click();
-        }
-    }
 }
 
 const handler = (folders) => {
