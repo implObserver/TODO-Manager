@@ -101,6 +101,7 @@ span {
 .link {
     display: flex;
     align-items: center;
+    border-radius: 1vh 0 0 1vh;
 }
 
 .delete-link,

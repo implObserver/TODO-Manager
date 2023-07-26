@@ -1,4 +1,6 @@
 import { openFolder } from "../controllers/foldersControllers";
+import { setListeners } from "../controllers/listeners";
+import { Tools } from "../helper/tools";
 import { getButtonForAddTask } from "../views/nodes/ButtonForAddTask";
 import { getTaskNode } from "../views/nodes/task";
 import { Element } from "./element";
@@ -12,7 +14,31 @@ export const OpenedTask = (() => {
     const getOpenedTask = () => {
         return openedTask;
     }
+
     return { setOpenedTask, getOpenedTask }
+})();
+
+export const OpenedInput = (() => {
+    let openedInput = Tools.createNode('input', 'plug');
+
+    const setOpenedInput = (input) => {
+        disableInput();
+        openedInput = input;
+        activateInput();
+    }
+    const getOpenedInput = () => {
+        return openedInput;
+    }
+
+    const activateInput = () => {
+        openedInput.placeholder = 'Add comment...';
+        openedInput.focus();
+    }
+
+    const disableInput = () => {
+        openedInput.placeholder = '';
+    }
+    return { setOpenedInput, getOpenedInput }
 })();
 
 export const Task = (id) => {
@@ -20,20 +46,8 @@ export const Task = (id) => {
     const node = getTaskNode(id);
     let inputs = [];
 
-    const setContent = () => {
-        const content = document.querySelector('.template-task').cloneNode(true);
-        content.className = 'opened-task';
-        return content;
-    };
-
-    const content = setContent();
-
     const getNode = () => {
         return node;
-    }
-
-    const getContent = () => {
-        return content;
     }
 
     const setInput = (input) => {
@@ -46,6 +60,25 @@ export const Task = (id) => {
 
     const getInputs = () => {
         return inputs;
+    }
+
+    const setContent = () => {
+        const content = document.querySelector('.template-task').cloneNode(true);
+        content.className = 'opened-task';
+        setTitleInput(content);
+        return content;
+    };
+
+    const setTitleInput = (content) => {
+        const input = content.querySelector('.task-input');
+        setInput(input);
+        setListeners().forTitleInput(input, content);
+    }
+
+    const content = setContent();
+
+    const getContent = () => {
+        return content;
     }
 
     const del = (e) => {

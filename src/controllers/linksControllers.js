@@ -1,7 +1,6 @@
 import { Tools } from "../helper/tools";
-import { OpenedFolder } from "../models/folderModels";
-import { ClusterLink, FolderLink, Link, TaskLink } from "../models/linkOfPath";
-import { getNodeArrowDown, getNodeArrowRight, linkCfg, viewLink } from "../views/nodes/links";
+import { ClusterLink, TaskLink } from "../models/linkOfPath";
+import { getNodeArrowDown, getNodeArrowRight, viewLink } from "../views/nodes/links";
 import { setListeners } from "./listeners";
 
 export const closeCluster = (link) => {

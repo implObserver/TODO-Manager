@@ -1,9 +1,8 @@
-import { Folder, OpenedFolder } from "../models/folderModels";
-import { FolderLink } from "../models/linkOfPath";
-import { OpenedTask } from "../models/taskModels";
+import { OpenedFolder } from "../models/folderModels";
+import { OpenedInput, OpenedTask } from "../models/taskModels";
 import { createFolder, openFolder } from "./foldersControllers";
 import { closeCluster, openCluster } from "./linksControllers";
-import { createTask, openTask } from "./taskControllers";
+import { createTask, openTask, taskContentHandler } from "./taskControllers";
 
 export const setListeners = () => {
     const forFolder = (folder) => {
@@ -90,45 +89,54 @@ export const setListeners = () => {
         })
     }
 
-    const forTitleInput = (input) => {
-        let count = 0;
-        let task = OpenedTask.getOpenedTask();
-        let content = task.getContent();
+    const forTitleInput = (input, content) => {
         let container = content.querySelector('.task-body');
-        const pressEnter = input.addEventListener('keyup', e => {
+        const pressKeys = input.addEventListener('keyup', e => {
             e.preventDefault();
-            task.setInput(input);
-
-            if (e.keyCode !== 8 && input.value === '') {
-                ++count;
-                console.log(count)
-            }
-
-            if (e.keyCode !== 8 && input.value !== '') {
-                count = 0;
-            }
 
             if (e.keyCode === 13) {
-                let newInput = document.querySelector('.template-input').cloneNode();
-                newInput.className = 'task-input';
-                container.appendChild(newInput);
-                newInput.focus();
-                forTitleInput(newInput);
+                let newInput = taskContentHandler().getNewInput();
+                container.insertBefore(newInput, container.firstChild);
+                taskContentHandler().activateInput(newInput);
+                forInput(newInput);
             }
 
+            if (e.keyCode === 40) {
+                taskContentHandler().setNextinput();
+            }
+        })
+    }
+
+    const forInput = (input) => {
+        let task = OpenedTask.getOpenedTask();
+        task.setInput(input);
+        const pressKeysUp = input.addEventListener('keyup', e => {
+            e.preventDefault();
+            if (e.keyCode === 13) {
+                let newInput = taskContentHandler().getNewInput();
+                taskContentHandler().viewNewInput(input, newInput);
+                forInput(newInput);
+            }
+        })
+
+        const pressKeysDown = input.addEventListener('keydown', e => {
             if (e.keyCode === 8) {
                 if (input.value === '') {
-                    ++count;
-                    if (count === 2) {
-                        if (content.querySelector('.title') !== input) {
-                            container.removeChild(input);
-                            task.removeInput(input);
-                            let newInput = task.getInputs().at(-1);
-                            newInput.focus();
-                        }
-                    }
+                    taskContentHandler().removeInput();
                 }
             }
+
+            if (e.keyCode === 38) {
+                taskContentHandler().setPreviousInput();
+            }
+
+            if (e.keyCode === 40) {
+                taskContentHandler().setNextinput();
+            }
+        })
+
+        const leftClick = input.addEventListener('click', e => {
+            taskContentHandler().activateInput(input);
         })
     }
 

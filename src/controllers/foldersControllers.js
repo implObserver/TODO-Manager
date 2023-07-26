@@ -1,5 +1,5 @@
 import { Tools } from "../helper/tools";
-import { ButtonForAddFolder, ButtonForCloseFolder, OpenedFolder } from "../models/folderModels";
+import { OpenedFolder } from "../models/folderModels";
 import { OpenedTask } from "../models/taskModels";
 import { viewElement } from "../views/nodes/folders";
 import { viewLinkOpenedFolder } from "../views/nodes/links";
