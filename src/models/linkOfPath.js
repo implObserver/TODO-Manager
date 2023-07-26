@@ -1,6 +1,6 @@
-import { getFolderLinkNode, getTaskLinkNode } from "../views/nodes/pathsContainers";
+import { getFolderLinkNode, getTaskLinkNode } from "../views/nodes/links";
 
-const Link = (iElement) => {
+export const Link = (iElement) => {
     let element = iElement;
     let name = element.getId();
     let node;
@@ -25,22 +25,29 @@ const Link = (iElement) => {
 }
 
 export const FolderLink = (folder) => {
+    let type = 'folder';
     let prototype = Link(folder);
     prototype.setNode(getFolderLinkNode(prototype.getName()));
     const getFolder = () => {
         return prototype.getElement();
     }
-    return Object.assign({}, prototype, { getFolder });
+    const getType = () => {
+        return type;
+    }
+    return Object.assign({}, prototype, { getFolder, getType });
 }
 
 export const TaskLink = (task) => {
+    let type = 'task';
     let prototype = Link(task);
     prototype.setNode(getTaskLinkNode(prototype.getName()));
     const getTask = () => {
         return prototype.getElement();
     }
-
-    return Object.assign({}, prototype, { getTask });
+    const getType = () => {
+        return type;
+    }
+    return Object.assign({}, prototype, { getTask, getType });
 }
 
 export const ClusterLink = (folder) => {

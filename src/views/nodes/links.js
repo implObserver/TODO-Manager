@@ -1,7 +1,8 @@
-import { setListenerfForLink } from "../../controllers/linksOfPath";
+import { openClusterWhenAddingFolder, setListenerfForLink } from "../../controllers/linksControllers";
 import { setListeners } from "../../controllers/listeners";
 import { Tools } from "../../helper/tools"
-import { RootFolder } from "../../models/folderModels";
+import { OpenedFolder, RootFolder } from "../../models/folderModels";
+import { OpenedTask } from "../../models/taskModels";
 
 export const viewRootPathsThree = () => {
     let link = RootFolder.getRootFolder().getLink();
@@ -82,4 +83,34 @@ export const linkCfg = (link, folder) => {
 export const createCluster = () => {
     const cluster = Tools.createNode('div', 'paths-cluster');
     return cluster;
+}
+
+export const viewLink = (link) => {
+    let container = OpenedFolder.getOpenedFolder().getCluster();
+    let innerTasks = OpenedFolder.getOpenedFolder().getInnerTasks();
+    container.style.paddingLeft += '1vh';
+    if (innerTasks.length > 0 && link.getType() === 'folder') {
+        let lastNode = innerTasks.at(0).getLink().getNode();
+        container.insertBefore(link.getNode(), lastNode);
+    } else {
+        container.appendChild(link.getNode());
+    }
+    openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
+}
+
+export const viewLinkOpenedFolder = (folder) => {
+    let openedFolderLink = OpenedFolder.getOpenedFolder().getLink().getNode();
+    openedFolderLink.querySelector('.link').style.backgroundColor = '#e9f5e9';
+    folder.getLink().getNode().querySelector('.link').style.backgroundColor = '#60d0e4';
+    OpenedFolder.setOpenedFolder(folder);
+}
+
+export const viewLinkOpenedTask = (task) => {
+    let openedTask = OpenedTask.getOpenedTask();
+    if (openedTask !== undefined) {
+        let openedTaskLink = OpenedTask.getOpenedTask().getLink().getNode();
+        openedTaskLink.querySelector('.link').style.backgroundColor = '#e9f5e9';
+    }
+    task.getLink().getNode().querySelector('.link').style.backgroundColor = '#ffe5b6';
+    OpenedTask.setOpenedTask(task);
 }

@@ -128,35 +128,13 @@ span {
     background-color: #37f037;
 }
 
-/*.paths {
-    display: flex;
-    width: 2vh;
-    height: 4vh;
-    border: 0.2vh #36bb36 solid;
-    background-color: #d83d71;
-    opacity: 0.5;
-    font-size: 2vh;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0.4vh;
-    cursor: pointer;
+.content>.opened-task {
+    display: grid;
+    grid-area: folders;
+    background-color: white;
+    z-index: 100;
+    visibility: visible;
 }
-
-.paths:hover {
-    opacity: 1;
-}
-
-@keyframes open {
-    from {
-        opacity: 0;
-        width: 0vh;
-    }
-
-    to {
-        opacity: 1;
-        width: 50vh;
-    }
-}*/
 
 .folders {
     display: grid;
@@ -173,6 +151,48 @@ span {
     background-color: #e9f5e9;
     font-size: var(--font-size-to-folder);
 }
+
+.opened-task {
+    display: none;
+    grid-template-rows: min-content 1fr;
+    padding: 10vh;
+    gap: 5vh;
+}
+
+.template-input {
+    display: none;
+}
+
+.template-task {
+    display: none;
+}
+
+.task-header>.task-input {
+    outline: none;
+}
+
+.task-body>.task-input {
+    display: flex;
+    height: min-content;
+    outline: none;
+}
+
+.task-input::placeholder {
+    opacity: 0.5;
+}
+
+.title {
+    font-size: 3rem;
+}
+
+.task-header {
+   
+}
+
+.task-body {
+    
+}
+
 
 .folder,
 .task,

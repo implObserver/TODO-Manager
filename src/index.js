@@ -1,8 +1,8 @@
 import { createFolder, openFolder, setResizeObservers } from './controllers/foldersControllers'
-import { setListenerfForLink } from './controllers/linksOfPath';
+import { setListenerfForLink } from './controllers/linksControllers';
 import { OpenedFolder, RootFolder } from './models/folderModels';
 import './views/css/main.css'
-import { viewRootPathsThree } from './views/nodes/pathsContainers';
+import { viewRootPathsThree } from './views/nodes/links';
 
 const start = () => {
     const rootFolder = RootFolder.getRootFolder();

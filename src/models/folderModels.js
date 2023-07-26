@@ -1,7 +1,7 @@
 import { getFolderNode } from "../views/nodes/folder";
 import { getButtonForAddFolder } from "../views/nodes/ButtonForAddFolder";
 import { getButtonForCloseFolder } from "../views/nodes/ButtonForCloseFolder";
-import { createCluster } from "../views/nodes/pathsContainers";
+import { createCluster } from "../views/nodes/links";
 import { openFolder } from "../controllers/foldersControllers";
 import { Element } from "./element";
 

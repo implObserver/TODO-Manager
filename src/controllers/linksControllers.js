@@ -1,5 +1,7 @@
 import { Tools } from "../helper/tools";
-import { getNodeArrowDown, getNodeArrowRight } from "../views/nodes/pathsContainers";
+import { OpenedFolder } from "../models/folderModels";
+import { ClusterLink, FolderLink, Link, TaskLink } from "../models/linkOfPath";
+import { getNodeArrowDown, getNodeArrowRight, linkCfg, viewLink } from "../views/nodes/links";
 import { setListeners } from "./listeners";
 
 export const closeCluster = (link) => {
@@ -20,7 +22,7 @@ export const openCluster = (link) => {
 
 export const setListenerfForLink = (link) => {
     const clusterClose = link.getNode().querySelector('.close-cluster');
-    setListeners().forLinkOfMapPaths(link);
+    setListeners().forLink(link);
     if (clusterClose !== null) {
         setListeners().forButtonToClusterPaths(clusterClose, link);
     }
@@ -46,4 +48,18 @@ export const openClusterWhenAddingFolder = (folder) => {
             button.click();
         }
     }
+}
+
+export const addLinkToPath = (element, type = 'folder') => {
+    let link = type === 'folder' ? getCustomLink(element) : TaskLink(element);
+    setListenerfForLink(link);
+    element.setLink(link);
+    viewLink(link);
+}
+
+export const getCustomLink = (folder) => {
+    const link = ClusterLink(folder);
+    link.getCluster().style.display = 'none';
+    link.getNode().appendChild(link.getCluster());
+    return link;
 }
