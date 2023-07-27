@@ -90,12 +90,14 @@ export const setListeners = () => {
     }
 
     const forTitleInput = (input, content) => {
+        let index = 0;
         let container = content.querySelector('.task-body');
         const pressKeys = input.addEventListener('keyup', e => {
             e.preventDefault();
-
             if (e.keyCode === 13) {
                 let newInput = taskContentHandler().getNewInput();
+                //console.log(OpenedTask.getOpenedTask().getInputs().indexOf(input));
+                OpenedTask.getOpenedTask().spliceInput(index + 1, newInput);
                 container.insertBefore(newInput, container.firstChild);
                 taskContentHandler().activateInput(newInput);
                 forInput(newInput);
@@ -104,16 +106,20 @@ export const setListeners = () => {
             if (e.keyCode === 40) {
                 taskContentHandler().setNextinput();
             }
+
+            const leftClick = input.addEventListener('click', e => {
+                taskContentHandler().activateInput(input);
+            })
         })
     }
 
     const forInput = (input) => {
-        let task = OpenedTask.getOpenedTask();
-        task.setInput(input);
         const pressKeysUp = input.addEventListener('keyup', e => {
             e.preventDefault();
+            let index = OpenedTask.getOpenedTask().getInputs().indexOf(input);
             if (e.keyCode === 13) {
                 let newInput = taskContentHandler().getNewInput();
+                OpenedTask.getOpenedTask().spliceInput(index + 1, newInput);
                 taskContentHandler().viewNewInput(input, newInput);
                 forInput(newInput);
             }

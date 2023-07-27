@@ -24,6 +24,9 @@ export const taskContentHandler = () => {
 
     const activateInput = (input) => {
         OpenedInput.setOpenedInput(input);
+        let index = OpenedTask.getOpenedTask().getInputs().indexOf(input);
+        input.placeholder = index;
+        console.log(OpenedTask.getOpenedTask().getInputs());
     }
 
     const getData = () => {

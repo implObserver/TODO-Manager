@@ -164,6 +164,10 @@ span {
     display: none;
 }
 
+.task-input {
+    border: 1px green solid;
+}
+
 .template-task {
     display: none;
 }
@@ -186,13 +190,9 @@ span {
     font-size: 3rem;
 }
 
-.task-header {
-   
-}
+.task-header {}
 
-.task-body {
-    
-}
+.task-body {}
 
 
 .folder,

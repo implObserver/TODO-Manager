@@ -1,5 +1,6 @@
 import { openFolder } from "../controllers/foldersControllers";
 import { setListeners } from "../controllers/listeners";
+import { taskContentHandler } from "../controllers/taskControllers";
 import { Tools } from "../helper/tools";
 import { getButtonForAddTask } from "../views/nodes/ButtonForAddTask";
 import { getTaskNode } from "../views/nodes/task";
@@ -54,6 +55,10 @@ export const Task = (id) => {
         inputs.push(input);
     }
 
+    const spliceInput = (index, input) => {
+        inputs.splice(index, 0, input);
+    }
+
     const removeInput = (input) => {
         inputs = inputs.filter((e) => e !== input);
     }
@@ -72,6 +77,7 @@ export const Task = (id) => {
     const setTitleInput = (content) => {
         const input = content.querySelector('.task-input');
         setInput(input);
+        OpenedInput.setOpenedInput(input);
         setListeners().forTitleInput(input, content);
     }
 
@@ -89,7 +95,7 @@ export const Task = (id) => {
         openFolder(parent);
     }
 
-    return Object.assign({}, prototype, { getInputs, setInput, removeInput, getContent, del, getNode });
+    return Object.assign({}, prototype, { spliceInput, getInputs, setInput, removeInput, getContent, del, getNode });
 }
 
 export const ButtonForAddTask = (() => {
