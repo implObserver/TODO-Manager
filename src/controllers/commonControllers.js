@@ -29,6 +29,8 @@ const setButtonsListeners = () => {
     setListeners().forButtonToAddFolder(ButtonForAddFolder);
     setListeners().forButtonToAddTask(ButtonForAddTask);
     setListeners().forButtonToCloseFolder(ButtonForCloseFolder);
+    setListeners().forMainLinkButtonToAllPaths();
+
 };
 
 export const viewElements = (elements) => {

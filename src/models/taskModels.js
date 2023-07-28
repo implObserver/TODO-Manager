@@ -32,12 +32,16 @@ export const OpenedInput = (() => {
     }
 
     const activateInput = () => {
-        openedInput.placeholder = 'Add comment...';
+        if (openedInput !== OpenedTask.getOpenedTask().getInputs()[0]) {
+            openedInput.placeholder = 'Add comment...';
+        }
         openedInput.focus();
     }
 
     const disableInput = () => {
-        openedInput.placeholder = '';
+        if (openedInput !== OpenedTask.getOpenedTask().getInputs()[0]) {
+            openedInput.placeholder = '';
+        }
     }
     return { setOpenedInput, getOpenedInput }
 })();
@@ -77,7 +81,6 @@ export const Task = (id) => {
     const setTitleInput = (content) => {
         const input = content.querySelector('.task-input');
         setInput(input);
-        OpenedInput.setOpenedInput(input);
         setListeners().forTitleInput(input, content);
     }
 
@@ -96,6 +99,17 @@ export const Task = (id) => {
     }
 
     return Object.assign({}, prototype, { spliceInput, getInputs, setInput, removeInput, getContent, del, getNode });
+}
+
+export const Inputs = () => {
+    let node = document.querySelector('.template-input').cloneNode();
+    node.className = 'task-input';
+
+    const getTextInput = () => {
+        return node;
+    }
+
+    return { getTextInput };
 }
 
 export const ButtonForAddTask = (() => {

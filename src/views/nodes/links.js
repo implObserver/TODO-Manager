@@ -12,12 +12,6 @@ export const viewRootPathsThree = () => {
     document.querySelector('.delete-link').style.display = 'none';
 }
 
-export const openPathsSideBar = () => {
-    const container = document.querySelector('.path-container');
-    Tools.addClasses(container, 'open');
-    return container;
-}
-
 const getTemplateLinkNode = (name, node) => {
     const nodeWrapper = Tools.createNode('div', 'link-wrapper');
     const linkBody = Tools.createNode('div', 'link-body');
@@ -114,3 +108,9 @@ export const viewLinkOpenedTask = (task) => {
     task.getLink().getNode().querySelector('.link').style.backgroundColor = '#ffe5b6';
     OpenedTask.setOpenedTask(task);
 }
+
+const setSvgForMainLink = (() => {
+    const button = document.querySelector('.set-visible-paths');
+    const svg = getNodeArrowRight();
+    button.appendChild(svg);
+})();

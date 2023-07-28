@@ -9,6 +9,7 @@
 }
 
 :root {
+    font-size: 2vh;
     --font-size-to-folder: 0;
 }
 
@@ -32,28 +33,36 @@ span {
 
 .header {
     display: grid;
-    grid-template-columns: min-content min-content;
     gap: 1vh;
     height: 7vh;
-    justify-content: center;
+    justify-content: start;
+    padding-left: min(2vh, 2vw);
     align-items: center;
     background-color: #b2d4b2;
     max-width: inherit;
 }
 
-.chain-folders {
-    display: flex;
-    flex-direction: row;
-    max-width: 70vw;
-    font-size: min(2vh, var(--font-size-to-folder));
+.main-link {
+    display: grid;
+    grid-template-columns: min-content min-content;
     height: min-content;
-    overflow-x: scroll;
+}
 
+.set-visible-paths {
+    display: none;
+}
+
+.link-title {
+    display: flex;
+    width: min-content;
+    height: min-content;
+    font-size: min(4vh, 20vw);
 }
 
 .paths-container::-webkit-scrollbar,
 .name::-webkit-scrollbar,
-.folders::-webkit-scrollbar {
+.folders::-webkit-scrollbar,
+.task-body::-webkit-scrollbar {
     display: none;
     scrollbar-width: none;
 }
@@ -74,8 +83,6 @@ span {
 
 .content {
     display: grid;
-    grid-template-columns: min-content 1fr;
-    grid-template-areas: 'paths folders';
     max-width: inherit;
     max-height: inherit;
 }
@@ -156,30 +163,28 @@ span {
 .opened-task {
     display: none;
     grid-template-rows: min-content 1fr;
-    padding: 10vh;
-    gap: 5vh;
+    padding: min(6vh, 6vw);
+    max-width: inherit;
+    max-height: inherit;
+    height: 93vh;
+    gap: min(6vh, 6vw);
+    justify-content: center;
 }
 
 .template-input {
     display: none;
 }
 
-.task-input {
-    border: 1px green solid;
-}
-
 .template-task {
     display: none;
 }
 
-.task-header>.task-input {
-    outline: none;
-}
-
-.task-body>.task-input {
+.task-input {
     display: flex;
     height: min-content;
+    width: 100%;
     outline: none;
+    font-size: min(2vh, 2vw);
 }
 
 .task-input::placeholder {
@@ -187,13 +192,19 @@ span {
 }
 
 .title {
-    font-size: 3rem;
+    font-size: min(6vh, 6vw);
 }
 
-.task-header {}
+.task-header {
+    max-width: 100vh;
+}
 
-.task-body {}
-
+.task-body {
+    max-height: 60vh;
+    max-width: 100vh;
+    min-height: 100%;
+    overflow: scroll;
+}
 
 .folder,
 .task,
@@ -302,9 +313,30 @@ span {
     }
 }
 
-@media screen and (max-aspect-ratio:1/1.0000001) {}
+@media screen and (max-aspect-ratio:1/1.0000001) {
 
-@media screen and (min-aspect-ratio: 1/1) and (min-width: 536px) {
+    .set-visible-paths {
+        display: flex;
+    }
+
+    .content {
+        grid-template-rows: min-content 1fr;
+        grid-template-areas:
+            'paths'
+            'folders';
+    }
+
+    .paths-container {
+        display: none;
+    }
+}
+
+@media screen and (min-aspect-ratio: 1/1) {
+
+    .content {
+        grid-template-columns: min-content 1fr;
+        grid-template-areas: 'paths folders';
+    }
 
     .paths-container {
         grid-area: paths;

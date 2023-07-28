@@ -3,9 +3,24 @@ import { ClusterLink, TaskLink } from "../models/linkOfPath";
 import { getNodeArrowDown, getNodeArrowRight, viewLink } from "../views/nodes/links";
 import { setListeners } from "./listeners";
 
+export const openAllLinks = () => {
+    let paths = document.querySelector('.paths-container');
+    let close = document.querySelector('.set-visible-paths');
+    paths.style.display = 'grid';
+    switchCloseButtonSvg(close, getNodeArrowDown());
+}
+
+export const closeAllLinks = () => {
+    let paths = document.querySelector('.paths-container');
+    let close = document.querySelector('.set-visible-paths');
+    paths.style.display = 'none';
+    switchCloseButtonSvg(close, getNodeArrowRight());
+}
+
 export const closeCluster = (link) => {
     let cluster = link.getCluster();
-    switchCloseButtonSvg(link, getNodeArrowRight());
+    let close = link.getNode().querySelector('.close-cluster');
+    switchCloseButtonSvg(close, getNodeArrowRight());
     Tools.smoothVisibility().close(cluster, 1, 0, 200, 'forwards');
     setTimeout(() => {
         cluster.style.display = 'none';
@@ -14,7 +29,8 @@ export const closeCluster = (link) => {
 
 export const openCluster = (link) => {
     let cluster = link.getCluster();
-    switchCloseButtonSvg(link, getNodeArrowDown());
+    let close = link.getNode().querySelector('.close-cluster');
+    switchCloseButtonSvg(close, getNodeArrowDown());
     cluster.style.display = 'grid';
     Tools.smoothVisibility().open(cluster, 0, 1, 200, 'forwards');
 }
@@ -28,8 +44,7 @@ export const setListenerfForLink = (link) => {
     setListeners().forButtonToDeleteLink(link);
 }
 
-const switchCloseButtonSvg = (link, child) => {
-    let close = link.getNode().querySelector('.close-cluster');
+const switchCloseButtonSvg = (close, child) => {
     Tools.removeChilds(close);
     close.appendChild(child);
 }

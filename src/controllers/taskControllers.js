@@ -1,9 +1,11 @@
 import { OpenedFolder } from "../models/folderModels";
-import { OpenedInput, OpenedTask, Task } from "../models/taskModels";
+import { regulars } from "../models/regulars";
+import { Inputs, OpenedInput, OpenedTask, Task } from "../models/taskModels";
 import { viewElement } from "../views/nodes/folders";
 import { viewLinkOpenedTask } from "../views/nodes/links";
 import { addLinkToPath } from "./linksControllers";
 import { setListeners } from "./listeners";
+
 
 export const taskContentHandler = () => {
     let count = 0;
@@ -11,10 +13,16 @@ export const taskContentHandler = () => {
     let content = task.getContent();
     let container = content.querySelector('.task-body');
 
-    const getNewInput = () => {
-        let input = document.querySelector('.template-input').cloneNode();
-        input.className = 'task-input';
-        return input;
+    const isNumberList = (str) => {
+        let checkNumberlist = new RegExp(regulars.checkNumberlist, 'g');
+        let res = str.match(checkNumberlist);
+
+        return res !== null;
+    }
+
+    const getNewInput = (flag = 'text') => {
+        let newInput = Inputs().getTextInput();
+        return newInput;
     }
 
     const viewNewInput = (input, newInput) => {
@@ -24,9 +32,6 @@ export const taskContentHandler = () => {
 
     const activateInput = (input) => {
         OpenedInput.setOpenedInput(input);
-        let index = OpenedTask.getOpenedTask().getInputs().indexOf(input);
-        input.placeholder = index;
-        console.log(OpenedTask.getOpenedTask().getInputs());
     }
 
     const getData = () => {
@@ -42,13 +47,17 @@ export const taskContentHandler = () => {
     const setPreviousInput = () => {
         const data = getData();
         const oldInput = data.inputs[data.index - 1];
-        activateInput(oldInput);
+        if (data.index - 1 >= 0) {
+            activateInput(oldInput);
+        }
     }
 
     const setNextinput = () => {
         const data = getData();
         const oldInput = data.inputs[data.index + 1];
-        activateInput(oldInput);
+        if (data.index + 1 < data.inputs.length) {
+            activateInput(oldInput);
+        }
     }
 
     const removeInput = () => {
@@ -61,7 +70,7 @@ export const taskContentHandler = () => {
         }, 1);
     }
 
-    return { setNextinput, setPreviousInput, removeInput, getNewInput, viewNewInput, activateInput };
+    return { isNumberList, setNextinput, setPreviousInput, removeInput, getNewInput, viewNewInput, activateInput };
 }
 
 export const openTask = (task) => {
@@ -71,8 +80,6 @@ export const openTask = (task) => {
     visibleOpenedTask();
     content.appendChild(task.getContent());
     const input = OpenedTask.getOpenedTask().getContent().querySelector('.task-input');
-    input.style.border = '1px red solid'
-    //setListeners().forTitleInput(input);
 }
 
 export const removeOpenedTask = () => {

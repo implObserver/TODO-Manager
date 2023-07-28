@@ -1,7 +1,7 @@
 import { OpenedFolder } from "../models/folderModels";
 import { OpenedInput, OpenedTask } from "../models/taskModels";
 import { createFolder, openFolder } from "./foldersControllers";
-import { closeCluster, openCluster } from "./linksControllers";
+import { closeAllLinks, closeCluster, openAllLinks, openCluster } from "./linksControllers";
 import { createTask, openTask, taskContentHandler } from "./taskControllers";
 
 export const setListeners = () => {
@@ -64,6 +64,20 @@ export const setListeners = () => {
         });
     }
 
+    const forMainLinkButtonToAllPaths = () => {
+        let flag;
+        let node = document.querySelector('.set-visible-paths');
+        let paths = document.querySelector('.paths-container');
+        const clickNode = node.addEventListener('click', e => {
+            flag = document.defaultView.getComputedStyle(paths).display;
+            if (flag === 'none') {
+                openAllLinks();
+            } else {
+                closeAllLinks();
+            }
+        });
+    }
+
     const forButtonToClusterPaths = (node, link) => {
         let flag;
         const clickNode = node.addEventListener('click', e => {
@@ -74,7 +88,6 @@ export const setListeners = () => {
                 closeCluster(link);
             }
         });
-        return { close };
     }
 
     const forButtonToDeleteLink = (link) => {
@@ -82,7 +95,7 @@ export const setListeners = () => {
         const clickNode = node.addEventListener('click', e => {
 
             let element = link.getElement();
-            if (confirm('Вы действительно хотите удалить папку и всё ее содержимое?')) {
+            if (confirm('Вы действительно хотите удалить элемент и всё его содержимое?')) {
                 element.del(element);
             } else {
             }
@@ -96,7 +109,6 @@ export const setListeners = () => {
             e.preventDefault();
             if (e.keyCode === 13) {
                 let newInput = taskContentHandler().getNewInput();
-                //console.log(OpenedTask.getOpenedTask().getInputs().indexOf(input));
                 OpenedTask.getOpenedTask().spliceInput(index + 1, newInput);
                 container.insertBefore(newInput, container.firstChild);
                 taskContentHandler().activateInput(newInput);
@@ -146,5 +158,5 @@ export const setListeners = () => {
         })
     }
 
-    return { forTitleInput, forTask, forButtonToAddTask, forButtonToDeleteLink, forButtonToClusterPaths, forLink, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
+    return { forMainLinkButtonToAllPaths, forTitleInput, forTask, forButtonToAddTask, forButtonToDeleteLink, forButtonToClusterPaths, forLink, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
 }
