@@ -47,8 +47,8 @@ export const OpenedInput = (() => {
 })();
 
 export const Task = (id) => {
-    const prototype = Element(id);
-    const node = getTaskNode(id);
+    const prototype = Element(`${id}t`);
+    const node = getTaskNode(`${id}t`);
     let inputs = [];
 
     const getNode = () => {
@@ -93,7 +93,6 @@ export const Task = (id) => {
     const del = (e) => {
         let parent = OpenedFolder.getOpenedFolder();
         parent.removeTask(e);
-        console.log(e.getNode());
         parent.getCluster().removeChild(e.getLink().getNode());
         openFolder(parent);
     }

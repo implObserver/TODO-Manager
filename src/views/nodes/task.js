@@ -1,4 +1,5 @@
 import { Tools } from "../../helper/tools";
+import { getInputText } from "./folder";
 
 const getWrapperIcon = () => {
     let wrapperIcon = Tools.createNode('div', 'icon-wrapper');
@@ -14,7 +15,7 @@ export const getTaskNode = (id) => {
 
 const taskNodeAssembly = (id) => {
     const task = Tools.createNode('div', 'task', id);
-    const name = Tools.getNodeWithSpan('div', `name: ${id}`, 'name');
+    const name = getInputText();
     Tools.appendChilds(task, getWrapperIcon(id), name);
     return task;
 }

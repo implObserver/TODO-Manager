@@ -8,10 +8,7 @@ import { setListeners } from "./listeners";
 
 
 export const taskContentHandler = () => {
-    let count = 0;
     let task = OpenedTask.getOpenedTask();
-    let content = task.getContent();
-    let container = content.querySelector('.task-body');
 
     const isNumberList = (str) => {
         let checkNumberlist = new RegExp(regulars.checkNumberlist, 'g');
@@ -109,6 +106,7 @@ export const createTask = (folder = OpenedFolder.getOpenedFolder()) => {
     let task = Task(taskId);
     folder.addTask(task);
     setListeners().forTask(task);
+    setListeners().forInputToName(task);
     addLinkToPath(task, 'task');
     viewElement(task.getNode(), 'task').forNewElement();
 }

@@ -46,6 +46,7 @@ export const setListeners = () => {
         let node = link.getNode().querySelector('.link');
         const clickNode = node.addEventListener('click', e => {
             e.stopPropagation();
+            console.log(link.getFolder())
             try {
                 openFolder(link.getFolder());
             } catch {
@@ -97,6 +98,9 @@ export const setListeners = () => {
             let element = link.getElement();
             if (confirm('Вы действительно хотите удалить элемент и всё его содержимое?')) {
                 element.del(element);
+                let folder = OpenedFolder.getOpenedFolder();
+                localStorage.setItem(`${folder.getId()}`, folder.getJSON());
+                localStorage.removeItem(`${element.getId()}`);
             } else {
             }
         })
@@ -155,8 +159,29 @@ export const setListeners = () => {
 
         const leftClick = input.addEventListener('click', e => {
             taskContentHandler().activateInput(input);
+            console.log(JSON.parse(OpenedFolder.getOpenedFolder().getJSON()));
         })
+
     }
 
-    return { forMainLinkButtonToAllPaths, forTitleInput, forTask, forButtonToAddTask, forButtonToDeleteLink, forButtonToClusterPaths, forLink, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
+    const forInputToName = (element) => {
+        let input = element.getNode().querySelector('input');
+
+        const focusOut = input.addEventListener('focusout', e => {
+            if (input.value !== '') {
+                setName();
+                localStorage.setItem(`${element.getId()}`, element.getJSON());
+            }
+        })
+
+        const setName = () => {
+            let name = input.value;
+            let link = element.getLink();
+            element.setName(name);
+            link.setName(name);
+            link.getNode().querySelector('span').textContent = name;
+        }
+    }
+
+    return { forInputToName, forMainLinkButtonToAllPaths, forTitleInput, forTask, forButtonToAddTask, forButtonToDeleteLink, forButtonToClusterPaths, forLink, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
 }

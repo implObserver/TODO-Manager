@@ -28,7 +28,11 @@ export const createFolder = (folder = OpenedFolder.getOpenedFolder()) => {
     let newFolder = folder.addFolder();
     viewElement(newFolder.getNode()).forNewElement();
     setListeners().forFolder(newFolder);
+    setListeners().forInputToName(newFolder);
     addLinkToPath(newFolder);
+    localStorage.setItem(`${newFolder.getId()}`, newFolder.getJSON());
+    localStorage.setItem(`${folder.getId()}`, folder.getJSON());
+    console.log(folder.get)
 }
 
 export const setResizeObservers = () => {

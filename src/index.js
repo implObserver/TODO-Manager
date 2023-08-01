@@ -1,20 +1,17 @@
+import { start } from './controllers/commonControllers';
 import { createFolder, openFolder, setResizeObservers } from './controllers/foldersControllers'
-import { setListenerfForLink } from './controllers/linksControllers';
-import { OpenedFolder, RootFolder } from './models/folderModels';
+import { addLinkToPath, setListenerfForLink } from './controllers/linksControllers';
+import { laodElements, loadFoldersElements } from './controllers/localStorageControllers';
+import { Folder, OpenedFolder, RootFolder } from './models/folderModels';
+import { FolderLink } from './models/linkOfPath';
 import './views/css/main.css'
-import { viewRootPathsThree } from './views/nodes/links';
+import { viewLink, viewRootPathsThree } from './views/nodes/links';
 
-const start = () => {
-    const rootFolder = RootFolder.getRootFolder();
-    setListenerfForLink(rootFolder.getLink());
-    setResizeObservers();
-    viewRootPathsThree();
+if (localStorage.length > 0) {
+   laodElements();
+} else {
+    start(RootFolder.getRootFolder());
 }
 
-start();
-
-for (let i = 0; i < 0; i++) {
-    createFolder();
-    let folder = OpenedFolder.getOpenedFolder().getInnerFolders()[0];
-    openFolder(folder)
-}
+setResizeObservers();
+viewRootPathsThree();

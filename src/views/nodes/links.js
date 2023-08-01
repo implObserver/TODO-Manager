@@ -76,13 +76,13 @@ export const linkCfg = (link, folder) => {
 
 export const createCluster = () => {
     const cluster = Tools.createNode('div', 'paths-cluster');
+    cluster.style.paddingLeft += '1vh';
     return cluster;
 }
 
 export const viewLink = (link) => {
     let container = OpenedFolder.getOpenedFolder().getCluster();
     let innerTasks = OpenedFolder.getOpenedFolder().getInnerTasks();
-    container.style.paddingLeft += '1vh';
     if (innerTasks.length > 0 && link.getType() === 'folder') {
         let lastNode = innerTasks.at(0).getLink().getNode();
         container.insertBefore(link.getNode(), lastNode);

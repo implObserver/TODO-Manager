@@ -1,12 +1,13 @@
 import { getFolderLinkNode, getTaskLinkNode } from "../views/nodes/links";
 
-export const Link = (iElement) => {
-    let element = iElement;
-    let name = element.getId();
+export const Link = (element) => {
+    let parent = element;
+    let id = parent.getId();
+    let name = id;
     let node;
 
     const getElement = () => {
-        return element;
+        return parent;
     }
 
     const getName = () => {
@@ -21,7 +22,11 @@ export const Link = (iElement) => {
         node = iNode;
     }
 
-    return { setNode, getNode, getName, getElement };
+    const setName = (val) => {
+        name = val;
+    }
+
+    return { setName, setNode, getNode, getName, getElement };
 }
 
 export const FolderLink = (folder) => {

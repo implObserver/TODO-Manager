@@ -157,7 +157,6 @@ span {
     padding: 1vh;
     height: 93vh;
     background-color: #e9f5e9;
-    font-size: var(--font-size-to-folder);
 }
 
 .opened-task {
@@ -260,6 +259,13 @@ span {
     max-width: 60%;
     max-height: inherit;
     overflow: scroll;
+    outline: none;
+    font-size: var(--font-size-to-folder);
+}
+
+.task>.name {
+    background-color: rgba(255,255,255,0);
+    width: 50%;
 }
 
 .templateFolder>.name,

@@ -26,9 +26,8 @@ export const Folder = (id) => {
     let taskCount = 0;
 
     const addFolder = () => {
-        const newId = `${prototype.getId()}_${folderCount}`;
+        let newFolder = Folder(folderCount);
         setFolderCount();
-        let newFolder = Folder(newId);
         innerFolders.push(newFolder);
         return newFolder;
     }
@@ -70,6 +69,10 @@ export const Folder = (id) => {
         return innerTasks;
     }
 
+    const reduceFolderCount = () => {
+        --folderCount;
+    }
+
     const setFolderCount = () => {
         ++folderCount;
     }
@@ -82,88 +85,53 @@ export const Folder = (id) => {
         return taskCount;
     }
 
-    return Object.assign({}, prototype, { removeTask, getTaskCount, setTaskCount, setFolderCount, addTask, getInnerTasks, addFolder, del, setInnerFolders, getInnerFolders, getCluster, getNode });
+    const getIdElements = (elements) => {
+        let allIds = [];
+        for (let element of elements) {
+            allIds.push(element.getId());
+        }
+        return allIds;
+    }
+
+    const getJSON = () => {
+        let list = {
+            name: prototype.getName(),
+            link: prototype.getLink().getName(),
+            parent: prototype.getParent().getId(),
+            id: `${prototype.getId()}`,
+            innerFolders: getIdElements(innerFolders),
+            innerTasks: getIdElements(innerTasks),
+            folderCount: folderCount,
+            taskCount: taskCount,
+        }
+
+        return JSON.stringify(list);
+    }
+
+    const unpackFolder = (data) => {
+        prototype.setId(data.id);
+        prototype.setName(data.name);
+        prototype.setLink(data.link);
+        prototype.setParent(data.parent);
+        innerFolders = data.innerFolders;
+        innerTasks = data.innerTasks;
+        folderCount = data.folderCount;
+        taskCount = data.taskCount;
+    }
+
+    return Object.assign({}, prototype, { reduceFolderCount, unpackFolder, getJSON, removeTask, getTaskCount, setTaskCount, setFolderCount, addTask, getInnerTasks, addFolder, del, setInnerFolders, getInnerFolders, getCluster, getNode });
 }
-
-/*export const Folder = (ids, folder = 0) => {
-    let id = ids;
-    let name;
-    let link;
-    let count = 0;
-    let parent = folder;
-    let cluster = createCluster();
-    const node = getFolderNode(id);
-    let innerFolders = []
-
-    const addFolder = (folder) => {
-        const newId = `${id}_${count}`;
-        ++count;
-        let newFolder = Folder(newId, folder);
-        innerFolders.push(newFolder);
-        return newFolder;
-    }
-
-    const del = () => {
-        let filter = parent.getInnerFolders().filter((folder) => folder !== link.getFolder());
-        setInnerFolders([]);
-        parent.getCluster().removeChild(link.getNode());
-        parent.setInnerFolders(filter);
-        openFolder(parent);
-    }
-
-    const setInnerFolders = (arr) => {
-        innerFolders = arr;
-    }
-
-    const getNode = () => {
-        return node;
-    }
-
-    const getId = () => {
-        return id;
-    }
-
-    const getInnerFolders = () => {
-        return innerFolders;
-    }
-
-    const setParent = (newParent) => {
-        parent = newParent;
-    }
-
-    const getParent = () => {
-        return parent;
-    }
-
-    const setName = (val) => {
-        name = val;
-    }
-
-    const getName = () => {
-        return name;
-    }
-
-    const setLink = (node) => {
-        link = node;
-    }
-
-    const getLink = () => {
-        return link;
-    }
-
-    const getCluster = () => {
-        return cluster;
-    }
-
-    return { setInnerFolders, getCluster, getLink, setLink, setParent, getParent, addFolder, del, getNode, getInnerFolders, getId, setName, getName };
-}*/
 
 export const RootFolder = (() => {
     let rootFolder = Folder(0);
     const getRootFolder = () => {
         return rootFolder;
     }
-    return { getRootFolder };
+
+    const setRootFolder = (folder) => {
+        rootFolder = folder;
+    }
+    return { setRootFolder, getRootFolder };
 })();
 
 export const ButtonForAddFolder = (() => {

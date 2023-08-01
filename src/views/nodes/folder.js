@@ -14,7 +14,14 @@ export const getFolderNode = (id) => {
 
 const folderNodeAssembly = (id) => {
     const folder = Tools.createNode('div', 'folder', id);
-    const name = Tools.getNodeWithSpan('div', `name: ${id}`, 'name');
+    const name = getInputText();
     Tools.appendChilds(folder, getWrapperIcon(id), name);
     return folder;
+}
+
+export const getInputText = () => {
+    const input = Tools.createNode('input', 'name');
+    input.setAttribute("type", "text");
+    input.placeholder = 'name?';
+    return input;
 }
