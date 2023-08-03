@@ -98,10 +98,11 @@ export const setListeners = () => {
 
             let element = link.getElement();
             if (confirm('Вы действительно хотите удалить элемент и всё его содержимое?')) {
+                let folder = element.getParent();
+                console.log(element)
                 element.del(element);
-                let folder = OpenedFolder.getOpenedFolder();
+                openFolder(folder);
                 localStorage.setItem(`${folder.getId()}`, folder.getJSON());
-                localStorage.removeItem(`${element.getId()}`);
             } else {
             }
         })

@@ -60,13 +60,18 @@ export const Folder = (id) => {
         return newFolder;
     }
 
-    const del = () => {
+    const del = (e) => {
+        for (let folder of innerFolders) {
+            folder.del();
+        }
+        for (let task of innerTasks) {
+            task.del(task);
+        }
         let filter = prototype.getParent().getInnerFolders().filter((folder) => folder !== prototype.getLink().getFolder());
         prototype.getParent().getCluster().removeChild(prototype.getLink().getNode());
         prototype.getParent().setInnerFolders(filter);
         setInnerFolders([]);
-        folderSerialNumberDecrement(serialNumber);
-        openFolder(prototype.getParent());
+        localStorage.removeItem(`${prototype.getId()}`);
     }
 
     const setInnerFolders = (arr) => {

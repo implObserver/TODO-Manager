@@ -146,13 +146,12 @@ export const Task = (id) => {
     }
 
     const del = (e) => {
-        let parent = OpenedFolder.getOpenedFolder();
+        let parent = prototype.getParent();
         parent.removeTask(e);
+        console.log(e)
         parent.getCluster().removeChild(e.getLink().getNode());
-        taskSerialNumberDecrement(serialNumber);
-        openFolder(parent);
+        //taskSerialNumberDecrement(serialNumber);
         localStorage.removeItem(`${e.getId()}`);
-        localStorage.setItem(`${parent.getId()}`, parent.getJSON());
     }
 
     const getJSON = () => {

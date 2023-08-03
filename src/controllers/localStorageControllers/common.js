@@ -39,6 +39,7 @@ const loadTasks = () => {
 const parseData = () => {
     for (var i = 0; i < localStorage.length; i++) {
         let data = JSON.parse(localStorage.getItem(localStorage.key(i)));
+        console.log(data.id)
         if (data.id === '0') {
             loadRootFolder(data);
         } else {

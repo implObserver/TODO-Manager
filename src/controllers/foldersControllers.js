@@ -13,7 +13,6 @@ export const openFolder = (folder) => {
     hiddenOpenedTask();
     clearFoldersContainer();
     createButtons();
-    console.log('aaa')
     viewLinkOpenedFolder(folder);
     viewElements(folder.getInnerFolders());
     viewElements(folder.getInnerTasks());
