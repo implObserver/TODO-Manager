@@ -20,23 +20,19 @@ export const laodElements = () => {
 const loadLastContent = () => {
     const lastContent = JSON.parse(localStorage.getItem('lastOpen'));
     console.log(lastContent)
-    if (lastContent === 'folder') {
-        loadOpenedFolder();
-    }
+    loadOpenedFolder();
     if (lastContent === 'task') {
-        loadOpenedFolder();
         loadOpenedTask();
     }
 }
 
 const loadOpenedFolder = () => {
     let folderId = JSON.parse(localStorage.getItem('openedFolder'));
+    start(RootFolder.getRootFolder());
     if (folderId === 0 || folderId === '0') {
-        start(RootFolder.getRootFolder());
         openFolder(RootFolder.getRootFolder())
     } else {
         let folder = getFolder(folderId);
-        start(RootFolder.getRootFolder());
         openFolder(folder)
         openCluster(folder.getLink());
     }
