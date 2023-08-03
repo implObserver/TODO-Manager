@@ -52,9 +52,10 @@ const switchCloseButtonSvg = (close, child) => {
 export const openClusterWhenAddingFolder = (folder) => {
     let cluster = folder.getCluster();
     let button = folder.getLink().getNode().querySelector('.close-cluster');
-    if (folder.getId() !== 0 && folder.getId() !== '0') {
-        if (document.defaultView.getComputedStyle(cluster).display === 'none') {
-            button.click();
+    if (folder.getId().toString() !== '0') {
+        const display = document.defaultView.getComputedStyle(cluster).display;
+        if (display === 'none' || display === '') {
+            openCluster(folder.getLink())
         }
         openClusterWhenAddingFolder(folder.getParent());
     } else if (folder.getId() === 0 || folder.getId() === '0') {

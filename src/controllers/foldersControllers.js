@@ -13,10 +13,12 @@ export const openFolder = (folder) => {
     hiddenOpenedTask();
     clearFoldersContainer();
     createButtons();
+    console.log('aaa')
     viewLinkOpenedFolder(folder);
     viewElements(folder.getInnerFolders());
     viewElements(folder.getInnerTasks());
     openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
+
 }
 
 const clearFoldersContainer = () => {
@@ -33,7 +35,7 @@ export const createFolder = (folder = OpenedFolder.getOpenedFolder()) => {
     setListeners().forInputToName(newFolder);
     addLinkToPath(newFolder);
     addFolder(newFolder);
-    openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
+   
     localStorage.setItem(`${newFolder.getId()}`, newFolder.getJSON());
     localStorage.setItem(`${folder.getId()}`, folder.getJSON());
 

@@ -4,10 +4,10 @@ import { start } from "../commonControllers";
 import { openFolder } from "../foldersControllers";
 import { openCluster } from "../linksControllers";
 import { openTask } from "../taskControllers";
-import { addFolderData, getFolder, loadFoldersElements, setAllFolderParents, setAllInnerFolders, setAllInnerTasks, sortFoldersData } from "./folders";
+import { addFolderData, getFolder, loadFoldersElements, loadOpenedFolder, setAllFolderParents, setAllInnerFolders, setAllInnerTasks, sortFoldersData } from "./folders";
 import { viewLinks } from "./links";
 import { loadRootFolder, setRootFolderParent, setRootInnerFolders, setRootInnerTasks, setRootTaskParent } from "./rootFolder";
-import { addTaskData, getTask, loadTaskcontent, loadTasksContents, loadTasksElements, setAllTaskParents, sortTasksData } from "./tasks";
+import { addTaskData, getTask, loadOpenedTask, loadTaskcontent, loadTasksContents, loadTasksElements, setAllTaskParents, sortTasksData } from "./tasks";
 
 export const laodElements = () => {
     parseData();
@@ -15,36 +15,6 @@ export const laodElements = () => {
     loadTasks();
     viewLinks();
     loadLastContent();
-}
-
-const loadLastContent = () => {
-    const lastContent = JSON.parse(localStorage.getItem('lastOpen'));
-    console.log(lastContent)
-    loadOpenedFolder();
-    if (lastContent === 'task') {
-        loadOpenedTask();
-    }
-}
-
-const loadOpenedFolder = () => {
-    let folderId = JSON.parse(localStorage.getItem('openedFolder'));
-    start(RootFolder.getRootFolder());
-    if (folderId === 0 || folderId === '0') {
-        openFolder(RootFolder.getRootFolder())
-    } else {
-        let folder = getFolder(folderId);
-        openFolder(folder)
-        openCluster(folder.getLink());
-    }
-}
-
-const loadOpenedTask = () => {
-    let taskId = JSON.parse(localStorage.getItem('openedTask'));
-    if (taskId !== undefined) {
-        let task = getTask(taskId);
-        openTask(task);
-        openCluster(task.getParent().getLink());
-    }
 }
 
 const loadFolders = () => {
@@ -82,5 +52,13 @@ const parseData = () => {
 
             }
         }
+    }
+}
+
+const loadLastContent = () => {
+    const lastContent = JSON.parse(localStorage.getItem('lastOpen'));
+    loadOpenedFolder();
+    if (lastContent === 'task') {
+        loadOpenedTask();
     }
 }

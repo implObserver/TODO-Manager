@@ -1,8 +1,8 @@
 import { TaskLink } from "../../models/linkOfPath";
 import { Task, serialNumberTask } from "../../models/taskModels";
-import { setListenerForLink } from "../linksControllers";
+import { openCluster, setListenerForLink } from "../linksControllers";
 import { setListeners } from "../listeners";
-import { taskContentHandler } from "../taskControllers";
+import { openTask, taskContentHandler } from "../taskControllers";
 import { getFolder } from "./folders";
 
 let tasksData = [];
@@ -98,11 +98,20 @@ const loadTaskcontent = (task) => {
             } else {
                 let input = taskContentHandler().getNewInput(value);
                 inputs.push(input);
-                body.appendChild(input);
+                body.appendChild(input)
                 setListeners().forInput(input);
             }
         }
     }
     task.setInputs(inputs);
     localStorage.setItem(`${task.getId()}`, task.getJSON());
+}
+
+export const loadOpenedTask = () => {
+    let taskId = JSON.parse(localStorage.getItem('openedTask'));
+    if (taskId !== undefined) {
+        let task = getTask(taskId);
+        openTask(task);
+        openCluster(task.getParent().getLink());
+    }
 }

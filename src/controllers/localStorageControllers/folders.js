@@ -1,5 +1,7 @@
-import { Folder, RootFolder, serialNumberFolder } from "../../models/folderModels";
-import { getCustomLink, setListenerForLink } from "../linksControllers";
+import { Folder, OpenedFolder, RootFolder, serialNumberFolder } from "../../models/folderModels";
+import { start } from "../commonControllers";
+import { openFolder } from "../foldersControllers";
+import { getCustomLink, openCluster, openClusterWhenAddingFolder, setListenerForLink } from "../linksControllers";
 import { setListeners } from "../listeners";
 import { getTask } from "./tasks";
 
@@ -117,4 +119,18 @@ export const folderSerialNumberDecrement = (number) => {
         }
     }
     serialNumberFolder.decrement();
+}
+
+export const loadOpenedFolder = () => {
+    let folderId = JSON.parse(localStorage.getItem('openedFolder'));
+    start(RootFolder.getRootFolder());
+    if (folderId === 0 || folderId === '0') {
+        openFolder(RootFolder.getRootFolder())
+    } else {
+        let folder = getFolder(folderId);
+        openFolder(folder)
+        console.log(folder.getLink().getNode())
+        openCluster(folder.getLink());
+        openClusterWhenAddingFolder(folder);
+    }
 }
