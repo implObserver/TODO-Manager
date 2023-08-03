@@ -1,16 +1,16 @@
 import { Tools } from "../helper/tools";
-import { OpenedFolder } from "../models/folderModels";
+import { OpenedFolder, serialNumberFolder } from "../models/folderModels";
 import { OpenedTask } from "../models/taskModels";
 import { viewElement } from "../views/nodes/folders";
 import { viewLinkOpenedFolder } from "../views/nodes/links";
 import { createButtons, viewElements } from "./commonControllers";
 import { openClusterWhenAddingFolder, addLinkToPath } from "./linksControllers";
 import { setListeners } from "./listeners";
+import { addFolder } from "./localStorageControllers/folders";
 import { hiddenOpenedTask } from "./taskControllers";
 
 export const openFolder = (folder) => {
     hiddenOpenedTask();
-    OpenedTask.getOpenedTask()
     clearFoldersContainer();
     createButtons();
     viewLinkOpenedFolder(folder);
@@ -26,13 +26,17 @@ const clearFoldersContainer = () => {
 
 export const createFolder = (folder = OpenedFolder.getOpenedFolder()) => {
     let newFolder = folder.addFolder();
+    newFolder.setSerialNumber(serialNumberFolder.getSerialNumber());
+    serialNumberFolder.increment();
     viewElement(newFolder.getNode()).forNewElement();
     setListeners().forFolder(newFolder);
     setListeners().forInputToName(newFolder);
     addLinkToPath(newFolder);
+    addFolder(newFolder);
+    openClusterWhenAddingFolder(OpenedFolder.getOpenedFolder());
     localStorage.setItem(`${newFolder.getId()}`, newFolder.getJSON());
     localStorage.setItem(`${folder.getId()}`, folder.getJSON());
-    console.log(folder.get)
+
 }
 
 export const setResizeObservers = () => {

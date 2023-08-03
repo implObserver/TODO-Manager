@@ -35,7 +35,7 @@ export const openCluster = (link) => {
     Tools.smoothVisibility().open(cluster, 0, 1, 200, 'forwards');
 }
 
-export const setListenerfForLink = (link) => {
+export const setListenerForLink = (link) => {
     const clusterClose = link.getNode().querySelector('.close-cluster');
     setListeners().forLink(link);
     if (clusterClose !== null) {
@@ -57,7 +57,7 @@ export const openClusterWhenAddingFolder = (folder) => {
             button.click();
         }
         openClusterWhenAddingFolder(folder.getParent());
-    } else if (folder.getId() === 0) {
+    } else if (folder.getId() === 0 || folder.getId() === '0') {
         if (document.defaultView.getComputedStyle(cluster).display === 'none') {
             button.click();
         }
@@ -66,7 +66,7 @@ export const openClusterWhenAddingFolder = (folder) => {
 
 export const addLinkToPath = (element, type = 'folder') => {
     let link = type === 'folder' ? getCustomLink(element) : TaskLink(element);
-    setListenerfForLink(link);
+    setListenerForLink(link);
     element.setLink(link);
     viewLink(link);
 }

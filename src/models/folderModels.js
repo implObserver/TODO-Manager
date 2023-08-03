@@ -4,11 +4,38 @@ import { getButtonForCloseFolder } from "../views/nodes/ButtonForCloseFolder";
 import { createCluster } from "../views/nodes/links";
 import { openFolder } from "../controllers/foldersControllers";
 import { Element } from "./element";
+import { folderSerialNumberDecrement, getFolder } from "../controllers/localStorageControllers/folders";
+
+export const serialNumberFolder = (() => {
+    let loadSerialNumber = localStorage.getItem('serialNumber');
+    let serialNumber = loadSerialNumber === null ? 0 : loadSerialNumber;
+    const increment = () => {
+        ++serialNumber;
+        localStorage.setItem('serialNumber', JSON.stringify(serialNumber));
+    }
+
+    const decrement = () => {
+        --serialNumber;
+        localStorage.setItem('serialNumber', JSON.stringify(serialNumber));
+    }
+
+    const getSerialNumber = () => {
+        return serialNumber;
+    }
+
+    return { getSerialNumber, decrement, increment };
+})();
 
 export const OpenedFolder = (() => {
+    let loadOpenedFolder = JSON.parse(localStorage.getItem('openedFolder'));
     let openedFolder;
+    if (loadOpenedFolder !== null) {
+        openedFolder = getFolder(loadOpenedFolder);
+    }
     const setOpenedFolder = (folder) => {
         openedFolder = folder;
+        localStorage.setItem('lastOpen', JSON.stringify('folder'));
+        localStorage.setItem('openedFolder', JSON.stringify(folder.getId()));
     }
     const getOpenedFolder = () => {
         return openedFolder;
@@ -24,6 +51,7 @@ export const Folder = (id) => {
     let innerTasks = [];
     let folderCount = 0;
     let taskCount = 0;
+    let serialNumber;
 
     const addFolder = () => {
         let newFolder = Folder(folderCount);
@@ -37,6 +65,7 @@ export const Folder = (id) => {
         prototype.getParent().getCluster().removeChild(prototype.getLink().getNode());
         prototype.getParent().setInnerFolders(filter);
         setInnerFolders([]);
+        folderSerialNumberDecrement(serialNumber);
         openFolder(prototype.getParent());
     }
 
@@ -69,6 +98,10 @@ export const Folder = (id) => {
         return innerTasks;
     }
 
+    const setInnerTasks = (tasks) => {
+        innerTasks = tasks;
+    }
+
     const reduceFolderCount = () => {
         --folderCount;
     }
@@ -93,6 +126,18 @@ export const Folder = (id) => {
         return allIds;
     }
 
+    const setSerialNumber = (number) => {
+        serialNumber = number;
+    }
+
+    const getSerialNumber = () => {
+        return serialNumber;
+    }
+
+    const decrementSerialNumber = () => {
+        --serialNumber;
+    }
+
     const getJSON = () => {
         let list = {
             name: prototype.getName(),
@@ -103,6 +148,7 @@ export const Folder = (id) => {
             innerTasks: getIdElements(innerTasks),
             folderCount: folderCount,
             taskCount: taskCount,
+            serialNumber: serialNumber,
         }
 
         return JSON.stringify(list);
@@ -111,15 +157,17 @@ export const Folder = (id) => {
     const unpackFolder = (data) => {
         prototype.setId(data.id);
         prototype.setName(data.name);
+        node.querySelector('input').value = prototype.getName();
         prototype.setLink(data.link);
         prototype.setParent(data.parent);
         innerFolders = data.innerFolders;
         innerTasks = data.innerTasks;
         folderCount = data.folderCount;
         taskCount = data.taskCount;
+        serialNumber = data.serialNumber;
     }
 
-    return Object.assign({}, prototype, { reduceFolderCount, unpackFolder, getJSON, removeTask, getTaskCount, setTaskCount, setFolderCount, addTask, getInnerTasks, addFolder, del, setInnerFolders, getInnerFolders, getCluster, getNode });
+    return Object.assign({}, prototype, { setInnerTasks, getSerialNumber, setSerialNumber, decrementSerialNumber, reduceFolderCount, unpackFolder, getJSON, removeTask, getTaskCount, setTaskCount, setFolderCount, addTask, getInnerTasks, addFolder, del, setInnerFolders, getInnerFolders, getCluster, getNode });
 }
 
 export const RootFolder = (() => {

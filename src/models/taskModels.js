@@ -1,5 +1,6 @@
 import { openFolder } from "../controllers/foldersControllers";
 import { setListeners } from "../controllers/listeners";
+import { getTask, taskSerialNumberDecrement } from "../controllers/localStorageControllers/tasks";
 import { taskContentHandler } from "../controllers/taskControllers";
 import { Tools } from "../helper/tools";
 import { getButtonForAddTask } from "../views/nodes/ButtonForAddTask";
@@ -7,10 +8,36 @@ import { getTaskNode } from "../views/nodes/task";
 import { Element } from "./element";
 import { OpenedFolder } from "./folderModels";
 
+export const serialNumberTask = (() => {
+    let loadSerialNumber = localStorage.getItem('serialNumberTask');
+    let serialNumber = loadSerialNumber === null ? 0 : loadSerialNumber;
+    const increment = () => {
+        ++serialNumber;
+        localStorage.setItem('serialNumberTask', JSON.stringify(serialNumber));
+    }
+
+    const decrement = () => {
+        --serialNumber;
+        localStorage.setItem('serialNumberTask', JSON.stringify(serialNumber));
+    }
+
+    const getSerialNumber = () => {
+        return serialNumber;
+    }
+
+    return { getSerialNumber, decrement, increment };
+})();
+
 export const OpenedTask = (() => {
+    let loadOpenedTask = JSON.parse(localStorage.getItem('openedTask'));
     let openedTask;
+    if (loadOpenedTask !== null) {
+        openedTask = getTask(loadOpenedTask);
+    }
     const setOpenedTask = (task) => {
         openedTask = task;
+        localStorage.setItem('lastOpen', JSON.stringify('task'));
+        localStorage.setItem('openedTask', JSON.stringify(task.getId()));
     }
     const getOpenedTask = () => {
         return openedTask;
@@ -49,10 +76,23 @@ export const OpenedInput = (() => {
 export const Task = (id) => {
     const prototype = Element(`${id}t`);
     const node = getTaskNode(`${id}t`);
+    let serialNumber;
     let inputs = [];
 
     const getNode = () => {
         return node;
+    }
+
+    const setSerialNumber = (val) => {
+        serialNumber = val;
+    }
+
+    const getSerialNumber = () => {
+        return serialNumber;
+    }
+
+    const decrementSerialNumber = () => {
+        --serialNumber;
     }
 
     const setInput = (input) => {
@@ -69,6 +109,10 @@ export const Task = (id) => {
 
     const getInputs = () => {
         return inputs;
+    }
+
+    const setInputs = (val) => {
+        inputs = val;
     }
 
     const setContent = () => {
@@ -90,14 +134,51 @@ export const Task = (id) => {
         return content;
     }
 
+    const getInputsValues = () => {
+        let values = [];
+
+        for (let input of inputs) {
+            if (input !== null) {
+                values.push(input.value);
+            }
+        }
+        return values;
+    }
+
     const del = (e) => {
         let parent = OpenedFolder.getOpenedFolder();
         parent.removeTask(e);
         parent.getCluster().removeChild(e.getLink().getNode());
+        taskSerialNumberDecrement(serialNumber);
         openFolder(parent);
+        localStorage.removeItem(`${e.getId()}`);
+        localStorage.setItem(`${parent.getId()}`, parent.getJSON());
     }
 
-    return Object.assign({}, prototype, { spliceInput, getInputs, setInput, removeInput, getContent, del, getNode });
+    const getJSON = () => {
+        let list = {
+            name: prototype.getName(),
+            link: prototype.getLink().getName(),
+            parent: prototype.getParent().getId(),
+            id: `${prototype.getId()}`,
+            serialNumber: serialNumber,
+            inputs: getInputsValues(),
+        }
+
+        return JSON.stringify(list);
+    }
+
+    const unpackTask = (data) => {
+        prototype.setId(data.id);
+        prototype.setName(data.name);
+        node.querySelector('input').value = prototype.getName();
+        prototype.setLink(data.link);
+        prototype.setParent(data.parent);
+        serialNumber = data.serialNumber;
+        inputs = data.inputs;
+    }
+
+    return Object.assign({}, prototype, { setInputs, setSerialNumber, getSerialNumber, decrementSerialNumber, getJSON, unpackTask, spliceInput, getInputs, setInput, removeInput, getContent, del, getNode });
 }
 
 export const Inputs = () => {

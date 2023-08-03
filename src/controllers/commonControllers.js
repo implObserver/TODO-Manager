@@ -3,7 +3,7 @@ import { ClusterLink } from "../models/linkOfPath";
 import { ButtonForAddTask } from "../models/taskModels";
 import { viewElement } from "../views/nodes/folders";
 import { viewLinkOpenedFolder } from "../views/nodes/links";
-import { openCluster, setListenerfForLink } from "./linksControllers";
+import { openCluster, setListenerForLink } from "./linksControllers";
 import { setListeners } from "./listeners";
 
 export const createButtonToAddFolder = () => {
@@ -43,7 +43,7 @@ export const viewElements = (elements) => {
 export const start = (rootFolder) => {
     rootFolder.setParent(rootFolder);
     rootFolder.setLink(ClusterLink(rootFolder));
-    setListenerfForLink(rootFolder.getLink());
+    setListenerForLink(rootFolder.getLink());
     OpenedFolder.setOpenedFolder(rootFolder);
     createButtons();
     setButtonsListeners();

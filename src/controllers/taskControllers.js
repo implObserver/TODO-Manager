@@ -1,10 +1,11 @@
 import { OpenedFolder } from "../models/folderModels";
 import { regulars } from "../models/regulars";
-import { Inputs, OpenedInput, OpenedTask, Task } from "../models/taskModels";
+import { Inputs, OpenedInput, OpenedTask, Task, serialNumberTask } from "../models/taskModels";
 import { viewElement } from "../views/nodes/folders";
 import { viewLinkOpenedTask } from "../views/nodes/links";
 import { addLinkToPath } from "./linksControllers";
 import { setListeners } from "./listeners";
+import { addTask } from "./localStorageControllers/tasks";
 
 
 export const taskContentHandler = () => {
@@ -17,8 +18,11 @@ export const taskContentHandler = () => {
         return res !== null;
     }
 
-    const getNewInput = (flag = 'text') => {
+    const getNewInput = (value = '') => {
         let newInput = Inputs().getTextInput();
+        if (value !== '') {
+            newInput.value = value;
+        }
         return newInput;
     }
 
@@ -105,8 +109,13 @@ export const createTask = (folder = OpenedFolder.getOpenedFolder()) => {
     let taskId = folder.getTaskCount();
     let task = Task(taskId);
     folder.addTask(task);
+    task.setSerialNumber(serialNumberTask.getSerialNumber());
+    serialNumberTask.increment();
     setListeners().forTask(task);
     setListeners().forInputToName(task);
     addLinkToPath(task, 'task');
     viewElement(task.getNode(), 'task').forNewElement();
+    addTask(task);
+    localStorage.setItem(`${task.getId()}`, task.getJSON());
+    localStorage.setItem(`${folder.getId()}`, folder.getJSON());
 }

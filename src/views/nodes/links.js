@@ -1,4 +1,4 @@
-import { openClusterWhenAddingFolder, setListenerfForLink } from "../../controllers/linksControllers";
+import { openClusterWhenAddingFolder, setListenerForLink } from "../../controllers/linksControllers";
 import { setListeners } from "../../controllers/listeners";
 import { Tools } from "../../helper/tools"
 import { OpenedFolder, RootFolder } from "../../models/folderModels";
@@ -71,7 +71,7 @@ export const getNodeArrowRight = () => {
 
 export const linkCfg = (link, folder) => {
     const clusterClose = link.getNode().querySelector('.close-cluster');
-    setListenerfForLink(link);
+    setListenerForLink(link);
 }
 
 export const createCluster = () => {

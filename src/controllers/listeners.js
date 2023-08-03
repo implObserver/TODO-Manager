@@ -2,6 +2,7 @@ import { OpenedFolder } from "../models/folderModels";
 import { OpenedInput, OpenedTask } from "../models/taskModels";
 import { createFolder, openFolder } from "./foldersControllers";
 import { closeAllLinks, closeCluster, openAllLinks, openCluster } from "./linksControllers";
+import { removeFolder } from "./localStorageControllers/common";
 import { createTask, openTask, taskContentHandler } from "./taskControllers";
 
 export const setListeners = () => {
@@ -46,7 +47,7 @@ export const setListeners = () => {
         let node = link.getNode().querySelector('.link');
         const clickNode = node.addEventListener('click', e => {
             e.stopPropagation();
-            console.log(link.getFolder())
+            console.log(link.getElement().getSerialNumber());
             try {
                 openFolder(link.getFolder());
             } catch {
@@ -112,10 +113,12 @@ export const setListeners = () => {
         const pressKeys = input.addEventListener('keyup', e => {
             e.preventDefault();
             if (e.keyCode === 13) {
+                let task = OpenedTask.getOpenedTask();
                 let newInput = taskContentHandler().getNewInput();
-                OpenedTask.getOpenedTask().spliceInput(index + 1, newInput);
+                task.spliceInput(index + 1, newInput);
                 container.insertBefore(newInput, container.firstChild);
                 taskContentHandler().activateInput(newInput);
+                localStorage.setItem(`${task.getId()}`, task.getJSON());
                 forInput(newInput);
             }
 
@@ -132,19 +135,23 @@ export const setListeners = () => {
     const forInput = (input) => {
         const pressKeysUp = input.addEventListener('keyup', e => {
             e.preventDefault();
+            let task = OpenedTask.getOpenedTask();
             let index = OpenedTask.getOpenedTask().getInputs().indexOf(input);
             if (e.keyCode === 13) {
                 let newInput = taskContentHandler().getNewInput();
-                OpenedTask.getOpenedTask().spliceInput(index + 1, newInput);
+                task.spliceInput(index + 1, newInput);
                 taskContentHandler().viewNewInput(input, newInput);
+                localStorage.setItem(`${task.getId()}`, task.getJSON());
                 forInput(newInput);
             }
         })
 
         const pressKeysDown = input.addEventListener('keydown', e => {
+            let task = OpenedTask.getOpenedTask();
             if (e.keyCode === 8) {
                 if (input.value === '') {
                     taskContentHandler().removeInput();
+                    localStorage.setItem(`${task.getId()}`, task.getJSON());
                 }
             }
 
@@ -159,7 +166,6 @@ export const setListeners = () => {
 
         const leftClick = input.addEventListener('click', e => {
             taskContentHandler().activateInput(input);
-            console.log(JSON.parse(OpenedFolder.getOpenedFolder().getJSON()));
         })
 
     }
@@ -183,5 +189,5 @@ export const setListeners = () => {
         }
     }
 
-    return { forInputToName, forMainLinkButtonToAllPaths, forTitleInput, forTask, forButtonToAddTask, forButtonToDeleteLink, forButtonToClusterPaths, forLink, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
+    return { forInput, forInputToName, forMainLinkButtonToAllPaths, forTitleInput, forTask, forButtonToAddTask, forButtonToDeleteLink, forButtonToClusterPaths, forLink, forFolder, forButtonToAddFolder, forButtonToCloseFolder }
 }
