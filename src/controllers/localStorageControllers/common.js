@@ -13,9 +13,8 @@ export const laodElements = () => {
     parseData();
     loadFolders();
     loadTasks();
-    loadLastContent();
     viewLinks();
-    //openFolder(getFolder(localStorage.getItem('openedFolder')));
+    loadLastContent();
 }
 
 const loadLastContent = () => {
@@ -34,6 +33,7 @@ const loadOpenedFolder = () => {
     let folderId = JSON.parse(localStorage.getItem('openedFolder'));
     if (folderId === 0 || folderId === '0') {
         start(RootFolder.getRootFolder());
+        openFolder(RootFolder.getRootFolder())
     } else {
         let folder = getFolder(folderId);
         start(RootFolder.getRootFolder());
