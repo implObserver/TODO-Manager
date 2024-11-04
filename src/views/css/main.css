@@ -256,6 +256,7 @@ span {
     align-content: center;
     text-align: start;
     height: min-content;
+    width: min-content;
     max-width: 60%;
     max-height: inherit;
     overflow: scroll;
@@ -264,7 +265,7 @@ span {
 }
 
 .task>.name {
-    background-color: rgba(255,255,255,0);
+    background-color: rgba(255, 255, 255, 0);
     width: 50%;
 }
 
