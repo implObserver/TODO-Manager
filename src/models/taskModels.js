@@ -148,9 +148,7 @@ export const Task = (id) => {
     const del = (e) => {
         let parent = prototype.getParent();
         parent.removeTask(e);
-        console.log(e)
         parent.getCluster().removeChild(e.getLink().getNode());
-        //taskSerialNumberDecrement(serialNumber);
         localStorage.removeItem(`${e.getId()}`);
     }
 
