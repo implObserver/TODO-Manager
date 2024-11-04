@@ -257,7 +257,7 @@ span {
     text-align: start;
     height: min-content;
     width: min-content;
-    max-width: 60%;
+    max-width: 40%;
     max-height: inherit;
     overflow: scroll;
     outline: none;
