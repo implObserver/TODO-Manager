@@ -156,6 +156,7 @@ span {
     overflow: scroll;
     padding: 1vh;
     height: 93vh;
+    gap:8vw;
     background-color: #e9f5e9;
 }
 

@@ -1,8 +1,7 @@
 import { OpenedFolder } from "../models/folderModels";
-import { OpenedInput, OpenedTask } from "../models/taskModels";
+import { OpenedTask } from "../models/taskModels";
 import { createFolder, openFolder } from "./foldersControllers";
 import { closeAllLinks, closeCluster, openAllLinks, openCluster } from "./linksControllers";
-import { removeFolder } from "./localStorageControllers/common";
 import { createTask, openTask, taskContentHandler } from "./taskControllers";
 
 export const setListeners = () => {
